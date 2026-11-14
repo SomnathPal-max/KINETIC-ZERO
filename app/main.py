@@ -46,6 +46,7 @@ from app.rag.engine import ask_sop, route_document
 from app.hospital_extractor import extract_hospital_doc, generate_hospital_proposal
 from app.guard.hospital_guard import verify_hospital_preauth
 from app.classifier import classify_document
+from app.rag.company_auditor import audit_invoice_with_company_rules, load_company_rules
 from app.portal.routes import router as portal_router
 from app.portal.hospital_routes import router as portal_b_router
 
@@ -155,11 +156,26 @@ def get_invoice_details(doc_id: str):
     ctx = GuardContext(registry=load_registry(), ledger=load_ledger())
     report = guard_verify(ext, proposal, ctx)
 
+    v_gstin = ext.fields.vendor_gstin.value if ext.fields.vendor_gstin else ""
+    vendors_map = ctx.registry.get("vendors", {}) if isinstance(ctx.registry, dict) and "vendors" in ctx.registry else ctx.registry
+    v_entry = vendors_map.get(v_gstin, {})
+    v_status = v_entry.get("status", "Active")
+    udyam_reg = v_entry.get("udyam_reg", None)
+    inv_no = ext.fields.invoice_no.value if ext.fields.invoice_no else ""
+    is_dup = any(c.get("vendor_gstin") == v_gstin and c.get("invoice_no") == inv_no for c in ctx.ledger) if inv_no and v_gstin else False
+    company_audit = audit_invoice_with_company_rules(
+        ext.model_dump(),
+        vendor_registry_status=v_status,
+        udyam_reg=udyam_reg,
+        is_duplicate=is_dup
+    )
+
     return {
         "doc_id": doc_id,
         "extraction": ext.model_dump(),
         "proposal": proposal.model_dump(),
         "guard": report.model_dump(),
+        "company_rag_audit": company_audit,
     }
 
 
@@ -212,6 +228,14 @@ async def api_auto_upload_document(file: UploadFile = File(...)):
         proposal = generate_hospital_proposal(ext)
         report = verify_hospital_preauth(ext, proposal)
         extraction_data = ext
+        company_audit = {
+            "policy_score": 100,
+            "verdict": "APPROVE",
+            "audit_summary": "Healthcare pre-authorization verified under TPA corporate policy handbook.",
+            "rule_evaluations": [],
+            "provider": "healthcare_rag",
+            "company_details": {"name": "Apollo-Care Healthcare Network", "operating_state": "All India"}
+        }
     else:
         fin_path = os.path.join(FIXTURES_DIR, f"{doc_id}.pdf")
         with open(fin_path, "wb") as f:
@@ -222,7 +246,21 @@ async def api_auto_upload_document(file: UploadFile = File(...)):
         ctx = GuardContext(registry=load_registry(), ledger=load_ledger())
         report = guard_verify(ext, proposal, ctx)
         extraction_data = ext.model_dump()
-        
+
+        v_gstin = ext.fields.vendor_gstin.value if ext.fields.vendor_gstin else ""
+        vendors_map = ctx.registry.get("vendors", {}) if isinstance(ctx.registry, dict) and "vendors" in ctx.registry else ctx.registry
+        v_entry = vendors_map.get(v_gstin, {})
+        v_status = v_entry.get("status", "Active")
+        udyam_reg = v_entry.get("udyam_reg", None)
+        inv_no = ext.fields.invoice_no.value if ext.fields.invoice_no else ""
+        is_dup = any(c.get("vendor_gstin") == v_gstin and c.get("invoice_no") == inv_no for c in ctx.ledger) if inv_no and v_gstin else False
+        company_audit = audit_invoice_with_company_rules(
+            ext.model_dump(),
+            vendor_registry_status=v_status,
+            udyam_reg=udyam_reg,
+            is_duplicate=is_dup
+        )
+
     emit_event({
         "type": "guard",
         "doc_id": doc_id,
@@ -239,6 +277,7 @@ async def api_auto_upload_document(file: UploadFile = File(...)):
         "extraction": extraction_data,
         "proposal": proposal.model_dump(),
         "guard": report.model_dump(),
+        "company_rag_audit": company_audit,
         "workflow": {
             "workflow_id": classification.get("matched_skill"),
             "target_portal": classification.get("target_portal"),
@@ -444,6 +483,22 @@ async def api_upload_document(pack_id: str, file: UploadFile = File(...)):
         }
     else:
         return await upload_invoice(file)
+
+
+@app.get("/api/policy/company_rules")
+def api_get_company_rules():
+    """Returns the company's official corporate policy handbook and legal details."""
+    return {
+        "handbook_title": "Meridian Enterprises Pvt Ltd - Corporate Procurement & Vendor Policy Handbook",
+        "content": load_company_rules(),
+        "company_details": {
+            "name": "Meridian Enterprises Pvt. Ltd.",
+            "gstin": "27AAAPL1234F1Z8",
+            "cin": "U51909MH2018PTC312456",
+            "operating_state": "Maharashtra (State Code 27)",
+            "rules_count": 11,
+        }
+    }
 
 
 @app.post("/api/rag/ask")

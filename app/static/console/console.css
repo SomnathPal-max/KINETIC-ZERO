@@ -1467,3 +1467,132 @@ body {
   border-color: var(--brand-ruby) !important;
   background-color: rgba(225, 29, 72, 0.1) !important;
 }
+
+/* Company Policy RAG Auditor Card */
+.company-rag-card {
+  background-color: var(--bg-surface);
+  border: 1px solid rgba(225, 29, 72, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.company-rag-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.company-rag-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.company-rag-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-milk);
+  letter-spacing: 0.04em;
+}
+
+.company-rag-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.company-rag-sub code {
+  color: #ff94b8;
+  background: rgba(225, 29, 72, 0.15);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.company-score-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(30, 12, 22, 0.85);
+  border: 1px solid rgba(225, 29, 72, 0.35);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.company-score-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.company-score-val {
+  font-size: 14px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: #4ade80;
+}
+
+.company-rag-summary {
+  font-size: 12px;
+  color: var(--text-cream);
+  line-height: 1.45;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  background: rgba(225, 29, 72, 0.06);
+  border-left: 3px solid var(--brand-ruby);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.company-rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 8px;
+}
+
+.company-rule-item {
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+
+.company-rule-item:hover {
+  border-color: rgba(225, 29, 72, 0.35);
+}
+
+.company-rule-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.company-rule-id {
+  font-size: 11px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--text-milk);
+}
+
+.company-rule-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.company-rule-finding {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}

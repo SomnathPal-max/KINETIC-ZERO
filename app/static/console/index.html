@@ -292,6 +292,41 @@
         </div>
       </div>
 
+      <!-- Ollama Company Policy RAG Audit Card (Audited against company_rules_and_details.md) -->
+      <div id="company-rag-card" class="company-rag-card">
+        <div class="company-rag-header">
+          <div class="company-rag-title-group">
+            <span style="font-size: 18px;">🏢</span>
+            <div>
+              <div class="company-rag-title">
+                COMPANY RULES RAG AUDITOR (MERIDIAN ENTERPRISES)
+              </div>
+              <div class="company-rag-sub">
+                Corporate Entity: <strong>Meridian Enterprises Pvt Ltd</strong> (GSTIN: <code>27AAAPL1234F1Z8</code>) • Ruleset: <code>CR-01 to CR-11</code>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="company-score-pill">
+              <span class="company-score-label">Ollama Policy Score:</span>
+              <span class="company-score-val" id="company-policy-score">100/100</span>
+            </div>
+            <button class="btn btn-secondary" onclick="openCompanyRulesModal()" style="font-size: 11px; padding: 4px 10px;">
+              📄 View Company RAG File
+            </button>
+          </div>
+        </div>
+
+        <div class="company-rag-summary" id="company-rag-summary">
+          Scanning incoming invoice against company procurement handbook...
+        </div>
+
+        <!-- Dynamic Rule Findings Accordion / Grid -->
+        <div class="company-rules-grid" id="company-rules-list">
+          <!-- Populated dynamically via JS: CR-01 to CR-11 -->
+        </div>
+      </div>
+
       <!-- Split Layout: Ground Truth Extraction vs Source PDF Text -->
       <div class="panel-grid-2">
         
@@ -803,6 +838,25 @@
         <button class="btn btn-primary" id="btn-save-record" onclick="simulateSaveRecording()" disabled>
           Generate & Save Skill JSON
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Company Policy Handbook Inspector -->
+  <div class="modal-backdrop" id="company-rules-modal">
+    <div class="modal-dialog" style="max-width: 760px; max-height: 85vh; display: flex; flex-direction: column;">
+      <div class="modal-dialog-header">
+        <h3 class="modal-dialog-title">🏢 Company Policy & Rules RAG Handbook (data/policy/company_rules_and_details.md)</h3>
+        <button class="btn btn-secondary" onclick="closeModal('company-rules-modal')" style="padding: 3px 10px; font-size: 11px;">✕</button>
+      </div>
+      <div class="modal-body" style="flex: 1; overflow-y: auto; padding: 18px 20px; background-color: var(--bg-canvas); border-radius: var(--radius-md); margin: 12px 0;">
+        <div id="company-rules-modal-content" style="white-space: pre-wrap; font-family: var(--font-sans); font-size: 12px; line-height: 1.6; color: var(--text-milk);">
+          Loading company rules handbook...
+        </div>
+      </div>
+      <div class="modal-dialog-footer" style="justify-content: space-between;">
+        <span class="chip chip-ruby">Active Corporate Ground Truth (CR-01 to CR-11)</span>
+        <button class="btn btn-secondary" onclick="closeModal('company-rules-modal')">Close</button>
       </div>
     </div>
   </div>

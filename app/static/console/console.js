@@ -613,6 +613,9 @@ function renderDocumentVerification(data) {
   // Animate trust score
   animateTrustScore(guard.data_trust_score || (verdict === "PROCEED" ? 100 : 0));
 
+  // Render Company Rules RAG Audit (CR-01 to CR-11)
+  renderCompanyRAGAudit(data.company_rag_audit);
+
   // Show Toast
   const toastType = verdict === "PROCEED" ? "success" : (verdict === "ESCALATE" ? "warning" : "error");
   showToast(`TruthGuard: ${verdict} (${data.doc_id})`, toastType);
@@ -661,6 +664,64 @@ function renderGatesTable(claims) {
     `;
     gatesBody.appendChild(tr);
   });
+}
+
+function renderCompanyRAGAudit(audit) {
+  const container = document.getElementById("company-rag-card");
+  if (!container) return;
+
+  if (activePackId === "hospital" && (!audit || !audit.rule_evaluations || audit.rule_evaluations.length === 0)) {
+    container.style.display = "none";
+    return;
+  }
+  container.style.display = "block";
+
+  const scoreEl = document.getElementById("company-policy-score");
+  const summaryEl = document.getElementById("company-rag-summary");
+  const listEl = document.getElementById("company-rules-list");
+
+  const score = audit?.policy_score ?? 100;
+  if (scoreEl) {
+    scoreEl.textContent = `${score}/100`;
+    scoreEl.style.color = score >= 80 ? "#4ade80" : (score >= 60 ? "#fbbf24" : "#f43f5e");
+  }
+
+  if (summaryEl) {
+    summaryEl.textContent = audit?.audit_summary || "Audit complete against company handbook.";
+  }
+
+  if (listEl && audit?.rule_evaluations) {
+    listEl.innerHTML = "";
+    audit.rule_evaluations.forEach((r) => {
+      const card = document.createElement("div");
+      card.className = "company-rule-item";
+
+      const badgeClass = r.status === "PASS" ? "chip-emerald" : (r.status === "FLAG" ? "chip-amber" : "chip-rose");
+      card.innerHTML = `
+        <div class="company-rule-top">
+          <span class="company-rule-id">${escapeHtml(r.rule_id)}</span>
+          <span class="chip ${badgeClass}">${escapeHtml(r.status)} (+${r.score_awarded} pts)</span>
+        </div>
+        <div class="company-rule-title">${escapeHtml(r.title)}</div>
+        <div class="company-rule-finding">${escapeHtml(r.finding)}</div>
+      `;
+      listEl.appendChild(card);
+    });
+  }
+}
+
+async function openCompanyRulesModal() {
+  openModal("company-rules-modal");
+  const contentEl = document.getElementById("company-rules-modal-content");
+  if (!contentEl) return;
+  contentEl.textContent = "Loading official company rules handbook...";
+  try {
+    const res = await fetch("/api/policy/company_rules");
+    const data = await res.json();
+    contentEl.textContent = data.content || "Handbook loaded.";
+  } catch (err) {
+    contentEl.textContent = "Failed to load handbook: " + err.message;
+  }
 }
 
 function highlightTextLayerMatch(evidence) {
