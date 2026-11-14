@@ -198,6 +198,18 @@
         </div>
       </div>
 
+      <!-- Universal Inbound Auto-Classifier Dropzone -->
+      <div id="universal-dropzone" class="inbound-stream-box" style="margin-bottom: 12px; border: 1.5px dashed var(--border-subtle); padding: 12px 18px; text-align: center; cursor: pointer; transition: all 0.2s ease;" onclick="document.getElementById('pdf-upload').click()">
+        <div style="font-size: 13px; font-weight: 700; color: var(--text-milk); display: flex; align-items: center; justify-content: center; gap: 8px;">
+          <span>🤖</span>
+          <span>Universal Auto-Classifier Dropzone: Drop any Invoice or Health Pre-Auth Document</span>
+          <span class="chip chip-ruby" style="font-size: 10px;">Powered by Ollama (llama3.2)</span>
+        </div>
+        <div style="font-size: 11px; color: var(--text-muted); margin-top: 3px;">
+          Automatically detects category (Finance vs Health), extracts data, verifies 11 policy gates, and routes to portal.
+        </div>
+      </div>
+
       <!-- Control Bar -->
       <div class="control-bar">
         <div class="control-group">
@@ -208,7 +220,7 @@
           <input type="file" id="pdf-upload" accept="application/pdf" style="display: none;" onchange="handleFileUpload(event)">
           <button class="btn btn-secondary" onclick="document.getElementById('pdf-upload').click()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-            Upload PDF
+            Upload PDF (Auto-Detect)
           </button>
         </div>
 
@@ -224,6 +236,38 @@
           <button class="btn btn-primary" onclick="runPreflightSuite()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
             Run Preflight (F10)
+          </button>
+        </div>
+      </div>
+
+      <!-- Ollama Autonomous Category Classifier Banner (Real-Time Domain Detection) -->
+      <div id="ai-classifier-card" class="ai-classifier-card" style="display: none;">
+        <div class="ai-classifier-body">
+          <div class="ai-classifier-top">
+            <div class="ai-classifier-badge-group">
+              <span class="ai-classifier-icon">🧠</span>
+              <span class="ai-classifier-title">OLLAMA INTELLIGENT CLASSIFIER</span>
+              <span id="ai-classifier-model-chip" class="chip chip-ruby">llama3.2:latest</span>
+              <span id="ai-classifier-domain-chip" class="chip chip-emerald">HEALTH DOMAIN</span>
+              <span id="ai-classifier-conf-chip" class="chip chip-amber">99% Conf</span>
+            </div>
+            <div class="ai-classifier-time" id="ai-classifier-time">1.2s</div>
+          </div>
+          <div class="ai-classifier-reason" id="ai-classifier-reason">
+            Document successfully categorized.
+          </div>
+          <div class="ai-classifier-meta">
+            <span>Detected Entities: <strong id="ai-classifier-entities">--</strong></span>
+            <span class="sep-bullet">•</span>
+            <span>Matched Skill: <code id="ai-classifier-skill">wf_vendor_claim</code></span>
+            <span class="sep-bullet">•</span>
+            <span>Target Portal: <code id="ai-classifier-portal">/portal/claim</code></span>
+          </div>
+        </div>
+        <div class="ai-classifier-action">
+          <button class="btn btn-primary" id="btn-raise-process-work" onclick="raiseProcessWork()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Raise Process Work (Auto-File)
           </button>
         </div>
       </div>

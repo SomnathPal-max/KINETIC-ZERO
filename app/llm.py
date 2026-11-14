@@ -21,6 +21,7 @@ OFFLINE_MODE = os.environ.get("K0_OFFLINE", "0") == "1"
 LLM_PROVIDER = os.environ.get("K0_LLM_PROVIDER", "ollama").lower()
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://127.0.0.1:11434")
 OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "llama3.2:latest")
+OLLAMA_TIMEOUT = float(os.environ.get("OLLAMA_TIMEOUT", "30.0"))
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 
@@ -185,7 +186,7 @@ def call_json(
                 data=json.dumps(payload).encode("utf-8"),
                 headers={"Content-Type": "application/json"},
             )
-            with urllib.request.urlopen(req, timeout=5.0) as resp:
+            with urllib.request.urlopen(req, timeout=OLLAMA_TIMEOUT) as resp:
                 resp_data = json.loads(resp.read().decode("utf-8"))
                 raw_response = resp_data.get("response", "{}")
                 result = json.loads(raw_response)

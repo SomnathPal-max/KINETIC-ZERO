@@ -50,3 +50,6 @@ $RECYCLE.BIN/
 # Secrets and local cache
 .env
 .cache/
+data/fixtures/uploads/
+data/fixtures/invoices/upload_*
+packs/hospital/fixtures/upload_*

@@ -45,6 +45,7 @@ from app.packs.loader import list_packs, get_pack, get_pack_schema, get_pack_rul
 from app.rag.engine import ask_sop, route_document
 from app.hospital_extractor import extract_hospital_doc, generate_hospital_proposal
 from app.guard.hospital_guard import verify_hospital_preauth
+from app.classifier import classify_document
 from app.portal.routes import router as portal_router
 from app.portal.hospital_routes import router as portal_b_router
 
@@ -162,31 +163,94 @@ def get_invoice_details(doc_id: str):
     }
 
 
-@app.post("/api/invoices/upload")
-async def upload_invoice(file: UploadFile = File(...)):
-    """Accepts uploaded PDF invoice, extracts fields, and runs Guard."""
-    os.makedirs(FIXTURES_DIR, exist_ok=True)
-    clean_filename = f"upload_{int(time.time())}_{file.filename}"
-    save_path = os.path.join(FIXTURES_DIR, clean_filename)
-
+@app.post("/api/documents/auto_upload")
+async def api_auto_upload_document(file: UploadFile = File(...)):
+    """
+    Universal Inbound Upload with Ollama Category Classification:
+    1. Ingests any PDF/document.
+    2. Runs local Ollama (llama3.2) to classify category: 'health' vs 'finance'.
+    3. Triggers domain extraction & agent proposal.
+    4. Evaluates TruthGuard policy gates & calculates Data Trust Score.
+    5. Binds target workflow skill & portal for autonomous execution.
+    """
     contents = await file.read()
-    with open(save_path, "wb") as f:
+    clean_filename = f"upload_{int(time.time())}_{file.filename}"
+    
+    # Save temporarily to inspect and classify
+    temp_dir = os.path.join(ROOT_DIR, "data", "fixtures", "uploads")
+    os.makedirs(temp_dir, exist_ok=True)
+    temp_path = os.path.join(temp_dir, clean_filename)
+    with open(temp_path, "wb") as f:
         f.write(contents)
-
+        
+    # 1. Run Ollama classification
+    classification = classify_document(pdf_path=temp_path)
+    category = classification.get("category", "finance")
+    pack_id = classification.get("pack_id", "finance")
     doc_id = os.path.splitext(clean_filename)[0]
-    ext = extract_invoice(doc_id, pdf_path=save_path)
-    proposal = generate_agent_proposal(ext)
 
-    ctx = GuardContext(registry=load_registry(), ledger=load_ledger())
-    report = guard_verify(ext, proposal, ctx)
-
+    emit_event({
+        "type": "classifier",
+        "doc_id": doc_id,
+        "category": category,
+        "pack_id": pack_id,
+        "confidence": classification.get("confidence", 0.95),
+        "reason": classification.get("reason", ""),
+        "model": classification.get("model", "llama3.2:latest"),
+        "filename": file.filename,
+    })
+    
+    # 2. Extract & Guard based on classified pack
+    if pack_id == "hospital":
+        hosp_dir = os.path.join(ROOT_DIR, "packs", "hospital", "fixtures")
+        os.makedirs(hosp_dir, exist_ok=True)
+        hosp_path = os.path.join(hosp_dir, f"{doc_id}.pdf")
+        with open(hosp_path, "wb") as f:
+            f.write(contents)
+            
+        ext = extract_hospital_doc(doc_id, pdf_path=hosp_path)
+        proposal = generate_hospital_proposal(ext)
+        report = verify_hospital_preauth(ext, proposal)
+        extraction_data = ext
+    else:
+        fin_path = os.path.join(FIXTURES_DIR, f"{doc_id}.pdf")
+        with open(fin_path, "wb") as f:
+            f.write(contents)
+            
+        ext = extract_invoice(doc_id, pdf_path=fin_path)
+        proposal = generate_agent_proposal(ext)
+        ctx = GuardContext(registry=load_registry(), ledger=load_ledger())
+        report = guard_verify(ext, proposal, ctx)
+        extraction_data = ext.model_dump()
+        
+    emit_event({
+        "type": "guard",
+        "doc_id": doc_id,
+        "pack_id": pack_id,
+        "verdict": report.verdict,
+        "score": getattr(report, "data_trust_score", 100),
+    })
+    
     return {
         "doc_id": doc_id,
         "filename": file.filename,
-        "extraction": ext.model_dump(),
+        "classifier": classification,
+        "pack_id": pack_id,
+        "extraction": extraction_data,
         "proposal": proposal.model_dump(),
         "guard": report.model_dump(),
+        "workflow": {
+            "workflow_id": classification.get("matched_skill"),
+            "target_portal": classification.get("target_portal"),
+            "pack_name": classification.get("pack_name"),
+        }
     }
+
+
+@app.post("/api/invoices/upload")
+async def upload_invoice(file: UploadFile = File(...)):
+    """Accepts uploaded PDF invoice, extracts fields, and runs Guard."""
+    return await api_auto_upload_document(file)
 
 
 @app.post("/api/guard/preflight")

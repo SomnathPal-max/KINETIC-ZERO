@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   checkLLMStatus();
   switchDomainPack("finance", true);
   loadBenchmarkResults();
+  setupUniversalDropzone();
 });
 
 // -------------------------------------------------------------
@@ -372,60 +373,159 @@ function showDocumentLoadingState() {
   }
 }
 
-async function handleFileUpload(e) {
-  const file = e.target.files[0];
+async function handleFileUpload(fileOrEvent) {
+  let file = null;
+  if (fileOrEvent && fileOrEvent.target && fileOrEvent.target.files) {
+    file = fileOrEvent.target.files[0];
+  } else if (fileOrEvent instanceof File) {
+    file = fileOrEvent;
+  }
   if (!file) return;
 
-  showToast(`Uploading and extracting: ${file.name}...`, "info");
+  showToast(`🤖 Ollama analyzing & classifying document: ${file.name}...`, "info");
   showDocumentLoadingState();
 
   const formData = new FormData();
   formData.append("file", file);
 
   try {
-    const res = await fetch(`/api/documents/${activePackId}/upload`, {
+    const res = await fetch("/api/documents/auto_upload", {
       method: "POST",
       body: formData,
     });
     const data = await res.json();
     currentDocData = data;
 
+    const classifier = data.classifier || {};
+    const detectedCategory = classifier.category || "finance";
+    const detectedPack = data.pack_id || classifier.pack_id || "finance";
+
+    // Auto-switch pack in UI if different from current
+    if (activePackId !== detectedPack) {
+      activePackId = detectedPack;
+      const pills = document.querySelectorAll(".pack-pill");
+      pills.forEach((p) => {
+        p.classList.toggle("active", p.dataset.pack === activePackId);
+      });
+      const labelEl = document.getElementById("doc-source-label");
+      if (labelEl) {
+        labelEl.textContent = activePackId === "hospital" ? "Pre-Auth Document:" : "Invoice Source:";
+      }
+      populateDocumentSelector(activePackId);
+    }
+
+    // Display Ollama Intelligent Classifier Card
+    const card = document.getElementById("ai-classifier-card");
+    if (card) {
+      card.style.display = "flex";
+      const modelChip = document.getElementById("ai-classifier-model-chip");
+      const domainChip = document.getElementById("ai-classifier-domain-chip");
+      const confChip = document.getElementById("ai-classifier-conf-chip");
+      const timeEl = document.getElementById("ai-classifier-time");
+      const reasonEl = document.getElementById("ai-classifier-reason");
+      const entitiesEl = document.getElementById("ai-classifier-entities");
+      const skillEl = document.getElementById("ai-classifier-skill");
+      const portalEl = document.getElementById("ai-classifier-portal");
+
+      if (modelChip) modelChip.textContent = classifier.model || "llama3.2:latest";
+      if (domainChip) {
+        domainChip.textContent = `${detectedCategory.toUpperCase()} DOMAIN`;
+        domainChip.className = detectedCategory === "health" ? "chip chip-emerald" : "chip chip-ruby";
+      }
+      if (confChip) confChip.textContent = `${Math.round((classifier.confidence || 0.95) * 100)}% Conf`;
+      if (timeEl) timeEl.textContent = `${((classifier.latency_ms || 1200) / 1000).toFixed(1)}s`;
+      if (reasonEl) reasonEl.textContent = classifier.reason || "Autonomous category classification complete.";
+      if (entitiesEl) entitiesEl.textContent = (classifier.detected_entities || []).join(", ") || "Domain signals verified";
+      if (skillEl) skillEl.textContent = data.workflow?.workflow_id || (activePackId === "hospital" ? "wf_hospital_preauth" : "wf_vendor_claim");
+      if (portalEl) portalEl.textContent = data.workflow?.target_portal || (activePackId === "hospital" ? "/portal_b/preauth" : "/portal/claim");
+    }
+
     // Add uploaded file to selector
     const selector = document.getElementById("invoice-selector");
     if (selector) {
       const opt = document.createElement("option");
       opt.value = data.doc_id;
-      opt.textContent = `Uploaded: ${data.filename}`;
+      opt.textContent = `[Auto-${detectedCategory.toUpperCase()}] ${data.filename}`;
       selector.insertBefore(opt, selector.firstChild);
       selector.selectedIndex = 0;
     }
 
     renderDocumentVerification(data);
-    showToast(`Extracted ${file.name} successfully`, "success");
+    const score = data.guard?.data_trust_score ?? 100;
+    showToast(`✓ Classified as ${detectedCategory.toUpperCase()} (${Math.round((classifier.confidence || 0.95) * 100)}%) — Data Trust Score: ${score}/100`, "success");
 
-    // Call Agent Router to demonstrate domain auto-classification
-    const rawText = (data.extraction && data.extraction.source_text) || "";
-    if (rawText) {
-      const routeRes = await fetch("/api/router", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: rawText }),
-      });
-      const routeData = await routeRes.json();
-      const banner = document.getElementById("router-banner");
-      const routerText = document.getElementById("router-text");
-      if (banner && routerText) {
-        banner.classList.add("active");
-        routerText.innerHTML = `
-          Detected Domain: <strong>${routeData.matched_pack_name}</strong> 
-          (${Math.round(routeData.confidence * 100)}% confidence) • 
-          Auto-matched skill: <code style="color:var(--brand-primary);">${routeData.matched_skill}</code>
-        `;
+  } catch (err) {
+    console.error("Auto upload failed:", err);
+    showToast("Upload and classification failed: " + err.message, "error");
+  }
+}
+
+function raiseProcessWork() {
+  if (!currentDocData) {
+    showToast("No active document loaded", "error");
+    return;
+  }
+  const pack = currentDocData.pack_id || activePackId;
+  const skill = currentDocData.workflow?.workflow_id || (pack === "hospital" ? "wf_hospital_preauth" : "wf_vendor_claim");
+  const portal = currentDocData.workflow?.target_portal || (pack === "hospital" ? "/portal_b/preauth" : "/portal/claim");
+
+  showToast(`🚀 Raising process work with skill '${skill}' in portal ${portal}...`, "info");
+
+  // 1. Switch to Tab 3 (Execute & Heal)
+  switchTab("run");
+
+  // 2. Select matching workflow in Tab 3 dropdown
+  const wfSelect = document.getElementById("workflow-selector");
+  if (wfSelect) {
+    for (let i = 0; i < wfSelect.options.length; i++) {
+      if (wfSelect.options[i].value === skill) {
+        wfSelect.selectedIndex = i;
+        break;
       }
     }
-  } catch (err) {
-    showToast("Upload failed: " + err.message, "error");
+    if (typeof loadWorkflowDetails === "function") {
+      loadWorkflowDetails();
+    }
   }
+
+  // 3. Focus the run button
+  setTimeout(() => {
+    const runBtn = document.getElementById("btn-run-workflow");
+    if (runBtn) {
+      runBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+      runBtn.focus();
+      showToast("Ready! Click 'Execute Live Workflow' to file claim into portal.", "success");
+    }
+  }, 350);
+}
+
+function setupUniversalDropzone() {
+  const dropzone = document.getElementById("universal-dropzone");
+  if (!dropzone) return;
+
+  ["dragenter", "dragover"].forEach((eventName) => {
+    dropzone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.add("dropzone-active");
+    }, false);
+  });
+
+  ["dragleave", "drop"].forEach((eventName) => {
+    dropzone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.remove("dropzone-active");
+    }, false);
+  });
+
+  dropzone.addEventListener("drop", (e) => {
+    const dt = e.dataTransfer;
+    const files = dt?.files;
+    if (files && files.length > 0) {
+      handleFileUpload(files[0]);
+    }
+  }, false);
 }
 
 function renderDocumentVerification(data) {
