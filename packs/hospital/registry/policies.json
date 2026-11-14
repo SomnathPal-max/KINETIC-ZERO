@@ -1,0 +1,32 @@
+{
+  "POL-88219": {
+    "patient_name": "Anita Sharma",
+    "status": "ACTIVE",
+    "max_coverage": 500000.0,
+    "valid_until": "2027-12-31"
+  },
+  "POL-44109": {
+    "patient_name": "Rajesh Kumar",
+    "status": "ACTIVE",
+    "max_coverage": 300000.0,
+    "valid_until": "2027-08-15"
+  },
+  "POL-77301": {
+    "patient_name": "Priya Patel",
+    "status": "ACTIVE",
+    "max_coverage": 150000.0,
+    "valid_until": "2027-05-20"
+  },
+  "POL-99402": {
+    "patient_name": "Vikram Singh",
+    "status": "LAPSED",
+    "max_coverage": 250000.0,
+    "valid_until": "2025-01-01"
+  },
+  "POL-11029": {
+    "patient_name": "Sunita Mehta",
+    "status": "SUSPENDED",
+    "max_coverage": 400000.0,
+    "valid_until": "2026-11-01"
+  }
+}

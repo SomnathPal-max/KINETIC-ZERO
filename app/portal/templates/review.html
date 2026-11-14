@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Meridian Vendor Claim Portal - Review Claim</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background: #f8fafc; color: #1e293b; padding: 2rem 1rem; }
+    .container { max-width: 800px; margin: 0 auto; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 2rem; }
+    header { border-bottom: 2px solid #e2e8f0; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+    header h1 { font-size: 1.5rem; color: #0f172a; }
+    .badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: #fef3c7; color: #b45309; }
+    .summary-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+    .summary-table th, .summary-table td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+    .summary-table th { background: #f1f5f9; color: #475569; font-size: 0.85rem; width: 35%; }
+    .summary-table td { font-weight: 500; font-size: 0.95rem; }
+    .total-row { background: #eff6ff; font-weight: 700; color: #1e3a8a; }
+    .actions { display: flex; gap: 1rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0; }
+    .btn { padding: 0.75rem 1.5rem; font-size: 0.95rem; font-weight: 600; border-radius: 6px; cursor: pointer; text-decoration: none; border: none; }
+    .btn-submit { background: #16a34a; color: #ffffff; }
+    .btn-submit:hover { background: #15803d; }
+    .btn-cancel { background: #dc2626; color: #ffffff; }
+    .btn-cancel:hover { background: #b91c1c; }
+    .btn-back { background: #e2e8f0; color: #475569; }
+    .btn-back:hover { background: #cbd5e1; }
+    
+    #judge-chaos-panel { position: fixed; top: 1rem; right: 1rem; background: #1e1e24; color: #fff; padding: 0.75rem 1rem; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); font-size: 0.8rem; z-index: 9999; }
+    #judge-chaos-panel select, #judge-chaos-panel button { font-size: 0.8rem; padding: 0.3rem 0.5rem; border-radius: 4px; margin-top: 0.4rem; }
+    #judge-chaos-panel button { background: #ef4444; color: #fff; border: none; cursor: pointer; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Judge Chaos Mutator Control -->
+  <div id="judge-chaos-panel">
+    <div><strong>⚡ Chaos Mutator</strong></div>
+    <div>Current: <span id="current-mutation-badge">{{ mutation.type }}</span></div>
+    <select id="judge-mutation-select">
+      <option value="none">Normal (No mutation)</option>
+      <option value="M1">M1: rename_ids</option>
+      <option value="M2">M2: relabel</option>
+      <option value="M3">M3: reorder</option>
+      <option value="M4">M4: retag</option>
+      <option value="M5">M5: decoy</option>
+      <option value="M6">M6: combo (Judge Button)</option>
+    </select>
+    <button id="judge-apply-mutate">Mutate</button>
+  </div>
+
+  <div class="container">
+    <header>
+      <span class="badge">Verification &amp; Final Review</span>
+      <h1>Review Claim Details</h1>
+      <p>Please inspect and confirm all line item values before submitting for final disbursement.</p>
+    </header>
+
+    <table class="summary-table" id="claim-review-table">
+      <tr><th>Vendor GSTIN</th><td id="rev_vendor_gstin" data-k0-field="vendor_gstin">{{ fields.vendor_gstin }}</td></tr>
+      <tr><th>Vendor Name</th><td id="rev_vendor_name" data-k0-field="vendor_name">{{ fields.vendor_name }}</td></tr>
+      <tr><th>Invoice No.</th><td id="rev_invoice_no" data-k0-field="invoice_no">{{ fields.invoice_no }}</td></tr>
+      <tr><th>Invoice Date</th><td id="rev_invoice_date" data-k0-field="invoice_date">{{ fields.invoice_date }}</td></tr>
+      <tr><th>PO Number</th><td id="rev_po_number" data-k0-field="po_number">{{ fields.po_number }}</td></tr>
+      <tr><th>Taxable Value</th><td id="rev_taxable_value" data-k0-field="taxable_value">₹ {{ fields.taxable_value }}</td></tr>
+      <tr><th>CGST</th><td id="rev_cgst" data-k0-field="cgst">₹ {{ fields.cgst }}</td></tr>
+      <tr><th>SGST</th><td id="rev_sgst" data-k0-field="sgst">₹ {{ fields.sgst }}</td></tr>
+      <tr><th>IGST</th><td id="rev_igst" data-k0-field="igst">₹ {{ fields.igst }}</td></tr>
+      <tr class="total-row"><th>Grand Total</th><td id="rev_total" data-k0-field="total">₹ {{ fields.total }}</td></tr>
+      <tr><th>Remarks</th><td id="rev_remarks" data-k0-field="remarks">{{ fields.remarks or 'N/A' }}</td></tr>
+    </table>
+
+    <div class="actions" id="review-actions-container">
+      <button type="button" id="btn_submit_payment" name="submit_payment" class="btn btn-submit" data-k0-action="submit_payment">Submit for Payment</button>
+      <a href="/portal/claim" id="btn_back" name="back_btn" class="btn btn-back" data-k0-action="back">Back</a>
+      <button type="button" id="btn_cancel_claim" name="cancel_claim" class="btn btn-cancel" data-k0-action="cancel">Cancel Claim</button>
+    </div>
+  </div>
+
+  <script src="/portal/static/mutations.js"></script>
+  <script>
+    document.getElementById('btn_submit_payment').addEventListener('click', async function() {
+      const res = await fetch('/portal/api/claims', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+      });
+      if (res.ok) {
+        window.location.href = '/portal/done';
+      } else {
+        alert('Payment submission failed');
+      }
+    });
+
+    document.getElementById('btn_cancel_claim').addEventListener('click', async function() {
+      await fetch('/portal/api/cancel', { method: 'POST' });
+      alert('Claim cancelled.');
+      window.location.href = '/portal/claim';
+    });
+  </script>
+</body>
+</html>

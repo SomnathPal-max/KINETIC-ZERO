@@ -1,0 +1,248 @@
+{
+  "workflow_id": "wf_vendor_claim",
+  "name": "Vendor claim entry",
+  "version": 1,
+  "start_url": "/portal/claim",
+  "steps": [
+    {
+      "id": "s1",
+      "action": "fill",
+      "intent": "Enter the vendor GSTIN",
+      "value_from": "vendor_gstin",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": ["cancel", "clear", "back"],
+      "locator": {"strategy": "id", "value": "#vendor_gstin"},
+      "alt_locators": [{"strategy": "name", "value": "vendor_gstin"}, {"strategy": "css", "value": "input[name='vendor_gstin']"}],
+      "fingerprint": {
+        "tag": "input", "id": "vendor_gstin", "name": "vendor_gstin", "classes": ["form-control"],
+        "text": "", "aria_label": "Vendor GSTIN", "role": "textbox", "type": "text",
+        "placeholder": "e.g. 27AAPFU0939F1ZV", "label_text": "Vendor GSTIN", "nearby_text": "GST Identification Number",
+        "dom_path": "html>body>main>form>div:nth-child(1)>input", "bbox": [0.3, 0.2, 0.4, 0.04], "form_id": "claim_form", "index_in_form": 0
+      },
+      "expect": {"kind": "value_equals", "arg": "27AAPFU0939F1ZV"},
+      "screenshot": "data/runs/teach_001/s1.png",
+      "narration": "Type the supplier tax ID"
+    },
+    {
+      "id": "s2",
+      "action": "fill",
+      "intent": "Enter the vendor name",
+      "value_from": "vendor_name",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": ["cancel", "clear", "back"],
+      "locator": {"strategy": "id", "value": "#vendor_name"},
+      "alt_locators": [{"strategy": "name", "value": "vendor_name"}],
+      "fingerprint": {
+        "tag": "input", "id": "vendor_name", "name": "vendor_name", "classes": ["form-control"],
+        "text": "", "aria_label": "Vendor Name", "role": "textbox", "type": "text",
+        "placeholder": "Legal Company Name", "label_text": "Vendor Name", "nearby_text": "Supplier entity name",
+        "dom_path": "html>body>main>form>div:nth-child(2)>input", "bbox": [0.3, 0.26, 0.4, 0.04], "form_id": "claim_form", "index_in_form": 1
+      },
+      "expect": {"kind": "value_equals", "arg": "Apex Industrial Supplies"},
+      "screenshot": "data/runs/teach_001/s2.png",
+      "narration": "Type company legal name"
+    },
+    {
+      "id": "s3",
+      "action": "fill",
+      "intent": "Enter invoice number",
+      "value_from": "invoice_no",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": ["cancel", "clear", "back"],
+      "locator": {"strategy": "id", "value": "#invoice_no"},
+      "alt_locators": [{"strategy": "name", "value": "invoice_no"}],
+      "fingerprint": {
+        "tag": "input", "id": "invoice_no", "name": "invoice_no", "classes": ["form-control"],
+        "text": "", "aria_label": "Invoice Number", "role": "textbox", "type": "text",
+        "placeholder": "INV-XXXX", "label_text": "Invoice No.", "nearby_text": "Bill reference number",
+        "dom_path": "html>body>main>form>div:nth-child(3)>input", "bbox": [0.3, 0.32, 0.4, 0.04], "form_id": "claim_form", "index_in_form": 2
+      },
+      "expect": {"kind": "value_equals", "arg": "INV-2026-089"},
+      "screenshot": "data/runs/teach_001/s3.png",
+      "narration": "Enter invoice reference"
+    },
+    {
+      "id": "s4",
+      "action": "fill",
+      "intent": "Enter invoice date",
+      "value_from": "invoice_date",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": ["cancel", "clear", "back"],
+      "locator": {"strategy": "id", "value": "#invoice_date"},
+      "alt_locators": [{"strategy": "name", "value": "invoice_date"}],
+      "fingerprint": {
+        "tag": "input", "id": "invoice_date", "name": "invoice_date", "classes": ["form-control"],
+        "text": "", "aria_label": "Invoice Date", "role": "textbox", "type": "date",
+        "placeholder": "YYYY-MM-DD", "label_text": "Invoice Date", "nearby_text": "Issue date",
+        "dom_path": "html>body>main>form>div:nth-child(4)>input", "bbox": [0.3, 0.38, 0.4, 0.04], "form_id": "claim_form", "index_in_form": 3
+      },
+      "expect": {"kind": "value_equals", "arg": "2026-11-01"},
+      "screenshot": "data/runs/teach_001/s4.png",
+      "narration": "Pick the invoice issue date"
+    },
+    {
+      "id": "s5",
+      "action": "fill",
+      "intent": "Enter purchase order number",
+      "value_from": "po_number",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": ["cancel", "clear", "back"],
+      "locator": {"strategy": "id", "value": "#po_number"},
+      "alt_locators": [{"strategy": "name", "value": "po_number"}],
+      "fingerprint": {
+        "tag": "input", "id": "po_number", "name": "po_number", "classes": ["form-control"],
+        "text": "", "aria_label": "PO Number", "role": "textbox", "type": "text",
+        "placeholder": "PO-XXXX", "label_text": "PO Number", "nearby_text": "Purchase order reference",
+        "dom_path": "html>body>main>form>div:nth-child(5)>input", "bbox": [0.3, 0.44, 0.4, 0.04], "form_id": "claim_form", "index_in_form": 4
+      },
+      "expect": {"kind": "value_equals", "arg": "PO-8832"},
+      "screenshot": "data/runs/teach_001/s5.png",
+      "narration": "Type purchase order"
+    },
+    {
+      "id": "s6",
+      "action": "fill",
+      "intent": "Enter taxable value",
+      "value_from": "taxable_value",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": ["cancel", "clear", "back"],
+      "locator": {"strategy": "id", "value": "#taxable_value"},
+      "alt_locators": [{"strategy": "name", "value": "taxable_value"}],
+      "fingerprint": {
+        "tag": "input", "id": "taxable_value", "name": "taxable_value", "classes": ["form-control"],
+        "text": "", "aria_label": "Taxable Value", "role": "textbox", "type": "number",
+        "placeholder": "0.00", "label_text": "Taxable Value", "nearby_text": "Subtotal before tax",
+        "dom_path": "html>body>main>form>div:nth-child(6)>input", "bbox": [0.3, 0.50, 0.4, 0.04], "form_id": "claim_form", "index_in_form": 5
+      },
+      "expect": {"kind": "value_equals", "arg": "3000.00"},
+      "screenshot": "data/runs/teach_001/s6.png",
+      "narration": "Type taxable subtotal"
+    },
+    {
+      "id": "s7",
+      "action": "fill",
+      "intent": "Enter central GST amount",
+      "value_from": "cgst",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": ["cancel", "clear", "back"],
+      "locator": {"strategy": "id", "value": "#cgst"},
+      "alt_locators": [{"strategy": "name", "value": "cgst"}],
+      "fingerprint": {
+        "tag": "input", "id": "cgst", "name": "cgst", "classes": ["form-control"],
+        "text": "", "aria_label": "CGST", "role": "textbox", "type": "number",
+        "placeholder": "0.00", "label_text": "CGST", "nearby_text": "Central goods and services tax",
+        "dom_path": "html>body>main>form>div:nth-child(7)>input", "bbox": [0.3, 0.56, 0.4, 0.04], "form_id": "claim_form", "index_in_form": 6
+      },
+      "expect": {"kind": "value_equals", "arg": "270.00"},
+      "screenshot": "data/runs/teach_001/s7.png",
+      "narration": "Type central GST"
+    },
+    {
+      "id": "s8",
+      "action": "fill",
+      "intent": "Enter state GST amount",
+      "value_from": "sgst",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": ["cancel", "clear", "back"],
+      "locator": {"strategy": "id", "value": "#sgst"},
+      "alt_locators": [{"strategy": "name", "value": "sgst"}],
+      "fingerprint": {
+        "tag": "input", "id": "sgst", "name": "sgst", "classes": ["form-control"],
+        "text": "", "aria_label": "SGST", "role": "textbox", "type": "number",
+        "placeholder": "0.00", "label_text": "SGST", "nearby_text": "State goods and services tax",
+        "dom_path": "html>body>main>form>div:nth-child(8)>input", "bbox": [0.3, 0.62, 0.4, 0.04], "form_id": "claim_form", "index_in_form": 7
+      },
+      "expect": {"kind": "value_equals", "arg": "270.00"},
+      "screenshot": "data/runs/teach_001/s8.png",
+      "narration": "Type state GST"
+    },
+    {
+      "id": "s9",
+      "action": "fill",
+      "intent": "Enter integrated GST amount",
+      "value_from": "igst",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": ["cancel", "clear", "back"],
+      "locator": {"strategy": "id", "value": "#igst"},
+      "alt_locators": [{"strategy": "name", "value": "igst"}],
+      "fingerprint": {
+        "tag": "input", "id": "igst", "name": "igst", "classes": ["form-control"],
+        "text": "", "aria_label": "IGST", "role": "textbox", "type": "number",
+        "placeholder": "0.00", "label_text": "IGST", "nearby_text": "Integrated GST",
+        "dom_path": "html>body>main>form>div:nth-child(9)>input", "bbox": [0.3, 0.68, 0.4, 0.04], "form_id": "claim_form", "index_in_form": 8
+      },
+      "expect": {"kind": "value_equals", "arg": "0.00"},
+      "screenshot": "data/runs/teach_001/s9.png",
+      "narration": "Type IGST amount"
+    },
+    {
+      "id": "s10",
+      "action": "fill",
+      "intent": "Enter total invoice amount",
+      "value_from": "total",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": ["cancel", "clear", "back"],
+      "locator": {"strategy": "id", "value": "#total"},
+      "alt_locators": [{"strategy": "name", "value": "total"}],
+      "fingerprint": {
+        "tag": "input", "id": "total", "name": "total", "classes": ["form-control"],
+        "text": "", "aria_label": "Total Amount", "role": "textbox", "type": "number",
+        "placeholder": "0.00", "label_text": "Total", "nearby_text": "Total payable invoice sum",
+        "dom_path": "html>body>main>form>div:nth-child(10)>input", "bbox": [0.3, 0.74, 0.4, 0.04], "form_id": "claim_form", "index_in_form": 9
+      },
+      "expect": {"kind": "value_equals", "arg": "3540.00"},
+      "screenshot": "data/runs/teach_001/s10.png",
+      "narration": "Type final grand total"
+    },
+    {
+      "id": "s11",
+      "action": "click",
+      "intent": "Click review claim button",
+      "value_from": null,
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": ["cancel", "clear", "back"],
+      "locator": {"strategy": "id", "value": "#btn_review"},
+      "alt_locators": [{"strategy": "css", "value": "button[type='submit']"}],
+      "fingerprint": {
+        "tag": "button", "id": "btn_review", "name": "review_btn", "classes": ["btn", "btn-primary"],
+        "text": "Review Claim", "aria_label": "Review Claim", "role": "button", "type": "submit",
+        "placeholder": "", "label_text": "Review Claim", "nearby_text": "Proceed to claim summary",
+        "dom_path": "html>body>main>form>div:nth-child(11)>button.btn-primary", "bbox": [0.3, 0.82, 0.2, 0.05], "form_id": "claim_form", "index_in_form": 10
+      },
+      "expect": {"kind": "url_contains", "arg": "/portal/review"},
+      "screenshot": "data/runs/teach_001/s11.png",
+      "narration": "Click to preview the claim"
+    },
+    {
+      "id": "s12",
+      "action": "click",
+      "intent": "Submit claim for payment",
+      "value_from": null,
+      "literal": null,
+      "irreversible": true,
+      "negative_terms": ["cancel", "clear", "back", "reject", "delete"],
+      "locator": {"strategy": "id", "value": "#btn_submit_payment"},
+      "alt_locators": [{"strategy": "css", "value": ".btn-submit"}],
+      "fingerprint": {
+        "tag": "button", "id": "btn_submit_payment", "name": "submit_payment", "classes": ["btn", "btn-success", "btn-submit"],
+        "text": "Submit for Payment", "aria_label": "Submit for Payment", "role": "button", "type": "button",
+        "placeholder": "", "label_text": "Submit for Payment", "nearby_text": "Final approval and ledger posting",
+        "dom_path": "html>body>main>div.actions>button.btn-success", "bbox": [0.4, 0.75, 0.2, 0.05], "form_id": "", "index_in_form": 0
+      },
+      "expect": {"kind": "url_contains", "arg": "/portal/done"},
+      "screenshot": "data/runs/teach_001/s12.png",
+      "narration": "Submit irreversible payment action"
+    }
+  ]
+}

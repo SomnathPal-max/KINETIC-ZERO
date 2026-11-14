@@ -1,0 +1,71 @@
+{
+  "doc_id": "inv_001",
+  "source_type": "pdf_text",
+  "passes": 1,
+  "source_text": "TAX INVOICE\nVendor: Apex Industrial Supplies\nVendor GSTIN: 27AAPFU0939F1ZV\nBuyer GSTIN: 27AAAPL1234F1Z8\nInvoice No: INV-2026-089\nInvoice Date: 2026-11-01\nPO Number: PO-8832\nLine 1: Industrial Bearings 2 Qty @ 1500.00 = 3000.00\nTaxable Value: 3000.00\nCGST (9%): 270.00\nSGST (9%): 270.00\nIGST: 0.00\nTotal: 3540.00",
+  "fields": {
+    "vendor_name": {
+      "value": "Apex Industrial Supplies",
+      "evidence": "Vendor: Apex Industrial Supplies",
+      "pass2_value": null
+    },
+    "vendor_gstin": {
+      "value": "27AAPFU0939F1ZV",
+      "evidence": "Vendor GSTIN: 27AAPFU0939F1ZV",
+      "pass2_value": null
+    },
+    "buyer_gstin": {
+      "value": "27AAAPL1234F1Z8",
+      "evidence": "Buyer GSTIN: 27AAAPL1234F1Z8",
+      "pass2_value": null
+    },
+    "invoice_no": {
+      "value": "INV-2026-089",
+      "evidence": "Invoice No: INV-2026-089",
+      "pass2_value": null
+    },
+    "invoice_date": {
+      "value": "2026-11-01",
+      "evidence": "Invoice Date: 2026-11-01",
+      "pass2_value": null
+    },
+    "po_number": {
+      "value": "PO-8832",
+      "evidence": "PO Number: PO-8832",
+      "pass2_value": null
+    },
+    "taxable_value": {
+      "value": "3000.00",
+      "evidence": "Taxable Value: 3000.00",
+      "pass2_value": null
+    },
+    "cgst": {
+      "value": "270.00",
+      "evidence": "CGST (9%): 270.00",
+      "pass2_value": null
+    },
+    "sgst": {
+      "value": "270.00",
+      "evidence": "SGST (9%): 270.00",
+      "pass2_value": null
+    },
+    "igst": {
+      "value": "0.00",
+      "evidence": "IGST: 0.00",
+      "pass2_value": null
+    },
+    "total": {
+      "value": "3540.00",
+      "evidence": "Total: 3540.00",
+      "pass2_value": null
+    }
+  },
+  "line_items": [
+    {
+      "desc": "Industrial Bearings",
+      "qty": "2",
+      "rate": "1500.00",
+      "amount": "3000.00"
+    }
+  ]
+}

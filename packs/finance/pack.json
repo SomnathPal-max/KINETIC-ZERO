@@ -1,0 +1,12 @@
+{
+  "id": "finance",
+  "name": "Finance / Accounts Payable",
+  "domain": "Accounts Payable & GST Compliance",
+  "description": "Vendor invoice verification, GST arithmetic/split checks, and automated submission to Vendor Claim Portal",
+  "doc_type": "invoice",
+  "target_portal": "/portal/claim",
+  "default_workflow": "wf_vendor_claim",
+  "policy_doc": "policy/vendor_payment_sop.md",
+  "registry": "registry/vendors.json",
+  "ledger": "registry/ledger.json"
+}

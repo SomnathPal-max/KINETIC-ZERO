@@ -1,0 +1,10 @@
+[
+  {
+    "claim_id": "CLM-2026-0001",
+    "vendor_gstin": "27BCDFG1234A1Z0",
+    "invoice_no": "INV-OLD-999",
+    "amount": "12500.00",
+    "status": "PAID",
+    "submitted_at": "2026-10-15T11:20:00Z"
+  }
+]

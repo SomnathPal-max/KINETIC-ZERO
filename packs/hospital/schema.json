@@ -1,0 +1,59 @@
+{
+  "doc_type": "preauth_form",
+  "fields": [
+    {
+      "name": "patient_name",
+      "type": "string",
+      "required": true,
+      "label": "Patient Name"
+    },
+    {
+      "name": "patient_id",
+      "type": "string",
+      "required": true,
+      "label": "Patient ID"
+    },
+    {
+      "name": "policy_number",
+      "type": "string",
+      "required": true,
+      "label": "Policy Number"
+    },
+    {
+      "name": "insurer_id",
+      "type": "string",
+      "required": true,
+      "label": "TPA / Insurer ID"
+    },
+    {
+      "name": "diagnosis_code",
+      "type": "string",
+      "required": true,
+      "label": "ICD-10 Diagnosis Code"
+    },
+    {
+      "name": "treatment_type",
+      "type": "string",
+      "required": true,
+      "label": "Treatment Type"
+    },
+    {
+      "name": "hospital_id",
+      "type": "string",
+      "required": true,
+      "label": "Hospital Network ID"
+    },
+    {
+      "name": "admission_date",
+      "type": "string",
+      "required": true,
+      "label": "Proposed Admission Date"
+    },
+    {
+      "name": "estimated_cost",
+      "type": "number",
+      "required": true,
+      "label": "Estimated Procedure Cost (Rs)"
+    }
+  ]
+}

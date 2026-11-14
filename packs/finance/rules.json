@@ -1,0 +1,65 @@
+{
+  "rules": [
+    {
+      "id": "R_FIN_01",
+      "gate": "G1",
+      "clause_id": "VP-2.2",
+      "type": "custom_checksum",
+      "field": "vendor_gstin",
+      "validator": "luhn_mod36",
+      "description": "Vendor GSTIN must be 15 chars and pass Luhn Mod-36 checksum."
+    },
+    {
+      "id": "R_FIN_02",
+      "gate": "G2",
+      "clause_id": "VP-3.1",
+      "type": "math_reconcile",
+      "description": "Line items, taxable value, taxes and total must reconcile within Rs 1.00."
+    },
+    {
+      "id": "R_FIN_03",
+      "gate": "G3",
+      "clause_id": "VP-3.2",
+      "type": "tax_split",
+      "description": "Intra-state supplies require equal CGST and SGST with 0 IGST; inter-state requires IGST."
+    },
+    {
+      "id": "R_FIN_04",
+      "gate": "G4",
+      "clause_id": "VP-2.1",
+      "type": "registry_lookup",
+      "field": "vendor_gstin",
+      "registry": "vendors",
+      "required_status": "ACTIVE",
+      "description": "Vendor must be active in registry. Suspended or cancelled vendors are blocked."
+    },
+    {
+      "id": "R_FIN_05",
+      "gate": "G5",
+      "clause_id": "VP-4.1",
+      "type": "value_threshold",
+      "field": "total",
+      "auto_max": 100000.0,
+      "escalate_max": 250000.0,
+      "description": "Up to Rs 100k auto-approved, Rs 100k-Rs 250k escalates for manager approval, >Rs 250k blocked."
+    },
+    {
+      "id": "R_FIN_06",
+      "gate": "G6",
+      "clause_id": "VP-6.1",
+      "type": "duplicate_check",
+      "field": "invoice_no",
+      "description": "Invoice number from same vendor is paid once only."
+    },
+    {
+      "id": "R_FIN_07",
+      "gate": "G7",
+      "clause_id": "VP-5.1",
+      "type": "date_range",
+      "field": "invoice_date",
+      "max_age_days": 90,
+      "allow_future": false,
+      "description": "Invoice date cannot be in the future or older than 90 days."
+    }
+  ]
+}

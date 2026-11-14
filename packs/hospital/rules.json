@@ -1,0 +1,68 @@
+{
+  "rules": [
+    {
+      "id": "R_HOSP_01",
+      "gate": "HP_G1",
+      "clause_id": "HP-1.1",
+      "type": "registry_lookup",
+      "field": "policy_number",
+      "registry": "policies",
+      "required_status": "ACTIVE",
+      "description": "Patient insurance policy must be ACTIVE in registry. Lapsed or suspended policies are blocked."
+    },
+    {
+      "id": "R_HOSP_02",
+      "gate": "HP_G2",
+      "clause_id": "HP-2.1",
+      "type": "allowed_values",
+      "field": "diagnosis_code",
+      "allowed_values": [
+        "J18",
+        "K35",
+        "M16",
+        "I20",
+        "S72",
+        "E11"
+      ],
+      "description": "Diagnosis ICD-10 code must be a covered inpatient condition. Cosmetic or unlisted codes are blocked."
+    },
+    {
+      "id": "R_HOSP_03",
+      "gate": "HP_G3",
+      "clause_id": "HP-3.1",
+      "type": "value_threshold",
+      "field": "estimated_cost",
+      "auto_max": 50000.0,
+      "escalate_max": 200000.0,
+      "description": "Up to Rs 50k auto-approved, Rs 50k-Rs 200k escalates to Medical Director, >Rs 200k blocked."
+    },
+    {
+      "id": "R_HOSP_04",
+      "gate": "HP_G4",
+      "clause_id": "HP-4.1",
+      "type": "registry_lookup",
+      "field": "hospital_id",
+      "registry": "hospitals",
+      "required_status": "EMPANELLED",
+      "description": "Treating facility must be in empanelled cashless hospital network."
+    },
+    {
+      "id": "R_HOSP_05",
+      "gate": "HP_G5",
+      "clause_id": "HP-1.2",
+      "type": "duplicate_check",
+      "field": "patient_id",
+      "description": "Patient cannot have duplicate pre-authorization submitted for same admission."
+    },
+    {
+      "id": "R_HOSP_06",
+      "gate": "HP_G6",
+      "clause_id": "HP-5.1",
+      "type": "date_range",
+      "field": "admission_date",
+      "max_future_days": 30,
+      "allow_past": false,
+      "description": "Proposed admission date must be within 30 days and cannot be in the past."
+    }
+  ]
+}

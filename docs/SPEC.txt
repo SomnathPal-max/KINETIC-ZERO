@@ -1,0 +1,1023 @@
+KINETIC-ZERO
+Build Specification v1.0 (frozen)
+Verified, self-healing automation for portals that have no API. Show it once; it automates the task,
+refuses to act on anything it cannot prove, and repairs itself when the portal changes.
+
+
+ Event                                      12-hour hackathon, Intelligence track (AI & Intelligent Systems). Window: 14 Nov 2026, 8:00 am to
+                                            8:00 pm IST.
+
+ Audience of this document                  Google Antigravity agents (Agent Manager) and the human lead. Read fully before writing any
+                                            code.
+
+ Track requirement we must prove            Beyond a basic API wrapper: non-trivial reasoning chain, agentic tool use, custom data indexing
+                                            pipeline, with measurable accuracy and efficiency.
+
+ Hard dates                                 Feature freeze 5:30 pm. Submission package ready 7:30 pm. Deadline 8:00 pm. Do not trade the
+                                            buffer for features.
+
+ Priority legend                            P0 must ship. P1 only after every P0 acceptance test passes. P2 only if ahead of schedule. CUT
+                                            never build.
+
+
+
+0. What changed from the original concept (and why)
+The original pitch described roughly 48 hours of work plus three imported ideas. This version keeps the winning core and
+replaces every claim that could not be built or defended in 12 hours.
+ Original idea                                 Frozen decision                                         Reason
+
+ 5 judge features + TruthGuard +               One core loop (Teach, Verify, Run, Heal) plus           12 hours. Depth with numbers beats
+ StructoAI + CyberTrap formula                 measured benchmarks                                     breadth with claims.
+
+ Capture screen video with                     DOM-level recorder injected into a                      Video gives pixels, not selectors. A
+ getDisplayMedia, infer actions                Playwright-controlled browser, one screenshot per       recorder gives stable targets plus
+                                               step; voice narration optional (P1)                     context.
+
+ Dual-Memory Graph-RAG on                      Clause-level hybrid index over a 14-clause SOP +        No graph or vector DB is needed for 14
+ Chroma/FAISS                                  SQLite episodic heal memory                             clauses. Still a custom indexing
+                                                                                                       pipeline.
+
+ TruthGuard: LLM breaks answers into           LLM only extracts and proposes. Deterministic hard      An LLM grading an LLM is circular and
+ claims, LLM verifies                          gates and evidence grounding verify and can             hard to defend.
+                                               overrule the LLM
+
+ CyberTrap weights 0.40/0.25/0.25/0.10         Hard gates carry safety. A weighted Data Trust Score A weighted sum can hide one critical
+ as the safety mechanism                       only ranks soft evidence. UI drift is a separate     failure behind good scores. Weights
+                                               per-step badge                                       are heuristic and must be labelled so.
+
+ OCR confidence threshold of 85%               Dual-pass extraction agreement +                        LLM vision does not return calibrated
+                                               checksum/arithmetic consistency as the error            OCR confidence.
+                                               detector
+
+ Detector -> Reasoner -> Verifier              Four tiers: exact, deterministic fingerprint scoring,   Cheaper, measurable (LLM calls per
+ healing                                       LLM selection, memory cache. Patch Verifier +           run), and safer against wrong-element
+                                               human gate on irreversible steps                        heals.
+
+ Predictive blast radius: cost and time        Measured benchmark metrics + static Fragility           Invented projections get punctured by
+ per 1,000 runs                                Forecast validated against results (P1)                 one judge question.
+
+ Shadow Sandbox simulates what-ifs in          Preflight counterfactuals on the Guard rule engine (7   Cheap, real, testable.
+ the browser                                   perturbations) - named honestly as a policy twin (P1)
+
+ Signed compliance PDF; TS/Python              Hash-chained HTML audit report and Playwright           Cut to what fits. 'Signed' implied
+ SDK; GitHub Action export                     Python export (both P2)                                 cryptography we are not building.
+
+ Real GST / insurance portals                  Self-built Meridian Vendor Claim Portal + mock          Real portals have CAPTCHA/OTP/ToS
+                                               GSTN registry, synthetic data only                      issues and cannot be reset for
+                                                                                                       benchmarks.
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                                   Page 1
+    Original idea                              Frozen decision                                       Reason
+
+    'Guarantees it never executes a            'Blocks unverified actions and reports its measured   Absolute claims lose credibility.
+    hallucinated action'                       catch rate'
+
+
+1. Agent operating rules (read before anything else)
+1 This document wins. If a prompt, comment, or your own idea conflicts with it, follow this document and log the conflict
+      in docs/CONFLICTS.md.
+2 Plan first. Post an Implementation Plan artifact for your workstream mapping each milestone (M0 to M6) to files.
+      Proceed unless the human comments.
+3 Priority order. Finish P0 acceptance tests before touching any P1 item. Never build a CUT item.
+4 No new tech. Use only the stack in Section 4. No React/Next, no Docker, no vector database, no external CSS/JS CDN
+      (the venue network may fail), no databases other than SQLite and JSON files.
+5 Contracts are frozen (Section 5). You may add an optional field; log it in docs/CONTRACT_CHANGES.md. Never rename or
+      remove a field.
+6 Own your directories only (Section 8). If you need a change elsewhere, write it to docs/REQUESTS.md and move on.
+7 Tests are part of done. Each module ships the tests named in Section 10. Run them and attach the output as an
+      artifact.
+8 Verify UI with the browser subagent and attach screenshots as artifacts. Do not report UI work done without one.
+9 Cache every LLM call to disk (Section 6.9). Offline replay mode is mandatory for demo reliability.
+10 Honesty rule. Never hard-code a benchmark result, a demo outcome, or an oracle shortcut. Numbers shown in the UI
+   must come from real runs. The healer, recorder and Guard must never read attributes starting with data-k0 (portal
+   plumbing).
+11 Time-box. Blocked more than 15 minutes on one item: apply the kill switch in Section 9, log it in docs/CUT_LOG.md,
+   move on.
+12 Secrets. Read GEMINI_API_KEY from .env. Never print or commit it.
+
+    Using Antigravity: save this PDF as docs/SPEC.pdf and the text copy as docs/SPEC.txt in the workspace. Open the Agent
+    Manager, create one agent per workstream in Section 8 (A, B, C, D), all on the same workspace, and paste the matching
+    kickoff prompt from Appendix E. Review artifacts (plans, screenshots, test output) instead of scrolling raw logs.
+
+
+2. Product definition
+One-liner
+Show it once. It automates forever, and refuses to act on anything it cannot prove.
+
+Problem
+Indian MSMEs, hospitals and CA firms do much of their back-office work in web portals without APIs: vendor payouts, GST
+data entry, insurance claim forms. Classic RPA breaks when a portal changes one button or ID and needs engineers.
+Prompt-based agents need prompt skills and can confidently click the wrong thing or act on a misread invoice.
+
+What we build (the demo-able loop)
+-     Verify: upload a vendor invoice (PDF text layer; image is P1). Gemini extracts fields with evidence quotes. The Guard
+      checks them with deterministic gates, evidence grounding and policy citations, then returns PROCEED, ESCALATE or
+      BLOCK. The Guard can overrule the AI's own proposal.
+-     Teach: an operator performs the claim once in the portal inside a Playwright browser. The recorder compiles the actions
+      into a workflow JSON with variables bound to invoice fields.
+-     Run: the runner replays the workflow on a new invoice. Before any browser action, the Guard must return PROCEED
+      (or a human approves an ESCALATE).
+-     Heal: a judge clicks Mutate. A naive replay breaks. KINETIC-ZERO repairs through four tiers, verifies the patch, asks a
+      human before irreversible actions when confidence is low, and stores the patch.
+-     Prove: a Results tab shows benchmark tables from real runs: heal success, wrong-action rate, LLM calls per run,
+      latency, Guard catch rate, false-block rate.
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                                Page 2
+Positioning against existing work (say this honestly)
+ Existing                                   What it does                                    How KINETIC-ZERO differs
+
+ browser-use workflow-use (open             Records browser actions into reusable           Adds a verification gate before action,
+ source, AGPL)                              workflows with LLM fallback                     evidence-based audit, a measured wrong-action
+                                                                                            rate, and an India MSME compliance workflow.
+                                                                                            Never copy its code (AGPL).
+
+ Healenium, Testim Smart Locators           Self-heal broken locators in test suites by     Same family as our Tier 1. We add LLM
+                                            similarity scoring                              tie-breaking, patch verification, memory cache and
+                                                                                            a human gate for irreversible steps.
+
+ UiPath, Power Automate recorders           Record and replay with selectors; need          Policy-gated, self-repairing, no code.
+                                            developers for maintenance
+
+Do not claim novelty of record-and-replay or self-healing locators. The defensible claim is the combination: verified inputs,
+gated actions, measured healing safety.
+
+3. Scope table
+ ID         Item                                                                             Pri       Done means
+
+ F1         Meridian Vendor Claim Portal (claim form, review, done) + mock GSTN              P0        A human completes a claim; GET
+            registry + reset/state APIs                                                                /portal/api/state shows it
+
+ F2         Chaos Mutator: 6 seeded mutation types, applied on every portal load             P0        Each mutation still lets a human
+                                                                                                       complete the task
+
+ F3         Guard engine: hard gates G1-G9, claims list, Data Trust Score, verdict           P0        >= 25 unit tests pass; GSTIN vector
+                                                                                                       passes
+
+ F4         Policy index: 14 clauses, hybrid retrieval, citation verification                P0        Query 'manager approval limit' returns
+                                                                                                       VP-4.2
+
+ F5         Invoice extraction via Gemini with evidence quotes (PDF text layer)              P0        10 fixture invoices extracted; grounding
+                                                                                                       check runs
+
+ F6         Recorder + compiler (teach mode) -> workflow JSON                                P0        Valid JSON, >= 12 steps, last step
+                                                                                                       irreversible
+
+ F7         Runner: tiers 0-3, Patch Verifier, human gate, episodic memory (SQLite)          P0        Heals M1-M4 in tests; second run after
+                                                                                                       a heal uses 0 LLM calls
+
+ F8         Console UI: Verify, Teach, Run, Results tabs; SSE live log                       P0        Full demo path clickable end to end
+
+ F9         Benchmarks: heal bench (30 runs x 3 methods) + guard bench (110 cases)           P0        Results tab renders real numbers
+            -> results.json
+
+ F10        Preflight counterfactuals (7 perturbations)                                      P1        Table shows 7/7 non-PROCEED
+
+ F11        Step badges (green/amber/red) + Fragility Forecast                               P1        Badges on workflow nodes; forecast vs
+                                                                                                       bench chart
+
+ F12        Voice narration via Web Speech API (Chrome, en-IN) attached to steps             P1        Narration text appears in step intent
+
+ F13        Invoice image input with dual-pass agreement + escalation crop                   P1        Smudged field triggers escalation
+
+ F14        Extraction accuracy benchmark (LLM vs ground truth, 20 invoices)                 P1        Field-level exact-match % in results
+
+ F15        Time-travel timeline of a run with heal diffs                                    P1        Step list with latency and diff
+
+ F16        Hash-chained HTML audit report                                                   P2        Prints cleanly to PDF
+
+ F17        Export workflow as standalone Playwright Python script                           P2        Script runs headless
+
+ X          getDisplayMedia video, handwriting, Chroma/FAISS, graph DB, TS SDK,              CUT       Do not build
+            GitHub Action, Docker, auth, real portals, 1,000-run cost forecasts,
+            cryptographic signing
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                                  Page 3
+4. Architecture, stack and repository
+  Operator (Chrome) -> Console http://localhost:8000/app          (vanilla HTML/JS, SSE live log)
+         | REST + SSE
+  FastAPI backend :8000
+    app/llm.py          Gemini wrapper: JSON output, disk cache, offline replay, usage counters
+    app/extractor.py    invoice (PDF text layer / image) -> InvoiceExtraction (fields + evidence)
+    app/guard/          rules G1-G9, claims, score, verdict, counterfactuals
+    app/policy/         SOP parser, hybrid index, retrieval, citation check
+    app/recorder.py     Playwright teach session -> Workflow JSON
+    app/runner.py       replay, heal tiers 0-3, Patch Verifier, human gate, RunLog
+    app/healer/         fingerprint.py, scoring.py, llm_select.py, verifier.py
+    app/memory.py       SQLite: heal events, patches, corrections
+    bench/              make_invoices.py, guard_bench.py, heal_bench.py -> results.json
+         |                                          |
+  Playwright Chromium (headed for demo) <----> Meridian Vendor Claim Portal /portal/*
+                                                  + chaos endpoints /portal/_k0/*
+
+
+Stack (no substitutions)
+ Layer                         Choice
+
+ Language / server             Python 3.11+, FastAPI, uvicorn, pydantic v2, python-dotenv. Streaming via FastAPI StreamingResponse
+                               (SSE).
+
+ Browser automation            Playwright for Python (Chromium). Teach mode and demo runs headed; benchmarks headless.
+
+ LLM                           google-genai SDK. Model ID from env GEMINI_MODEL. Hour-0 task: open Google AI Studio, pick a
+                               current Flash model that is free-tier eligible, set it in .env. Embeddings model in GEMINI_EMBED_MODEL.
+
+ Retrieval / math              numpy, rapidfuzz, own TF-IDF/BM25-lite. decimal.Decimal for all money.
+
+ Documents                     pypdf for the PDF text layer; reportlab to generate fixture invoices.
+
+ Storage                       SQLite file data/k0.db + JSON files. No other database.
+
+ Frontend                      Vanilla HTML/CSS/JS in app/static/. No build step, no CDN. Own small CSS.
+
+ Tests                         pytest.
+
+
+Repository layout
+ kinetic-zero/
+   .env.example        README.md requirements.txt
+   docs/                  SPEC.pdf SPEC.txt CONFLICTS.md CONTRACT_CHANGES.md CUT_LOG.md REQUESTS.md
+   contracts/             models.py (pydantic) examples/*.json
+   data/                  policy/vendor_payment_sop.md policy/policy.json registry/vendors.json
+                          ledger.json fixtures/invoices/*.pdf fixtures/ground_truth.json
+    app/                  main.py llm.py extractor.py recorder.py runner.py memory.py
+      portal/             routes.py templates/*.html static/portal.js static/mutations.js
+      guard/              engine.py gates.py gstin.py score.py counterfactuals.py
+      policy/             index.py retrieve.py
+      healer/             fingerprint.py scoring.py llm_select.py verifier.py
+      static/             console/index.html console.js console.css
+    bench/                make_invoices.py guard_bench.py heal_bench.py results.json
+    scripts/              demo_e2e.py warm_cache.py
+    tests/                portal/ guard/ policy/ runner/
+
+
+Environment variables
+ Variable                                            Purpose                                                    Default
+
+ GEMINI_API_KEY                                      API key (never commit)                                     required
+
+ GEMINI_MODEL /                                      Model IDs confirmed in AI Studio at M0                     set at M0
+ GEMINI_EMBED_MODEL
+
+ K0_OFFLINE                                          1 = serve only from cache, raise CacheMiss otherwise       0
+
+ K0_CACHE_DIR                                        LLM cache directory                                        .cache/llm
+
+ K0_PORT / K0_HEADLESS                               Server port / browser mode                                 8000 / 0
+
+
+  Privacy: free-tier Gemini content may be used by Google to improve products. Use synthetic fixtures only. Never upload a real
+  invoice, GSTIN, PAN or personal data.
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                           Page 4
+5. Data contracts (frozen)
+Implement these as pydantic models in contracts/models.py and write one valid example per contract in
+contracts/examples/. Money is always a string parsed with Decimal. Dates are ISO YYYY-MM-DD.
+
+5.1 InvoiceExtraction
+    { "doc_id": "inv_001", "source_type": "pdf_text" | "image", "passes": 1 | 2,
+      "source_text": "<PDF text layer, or transcription for images>",
+      "fields": {
+        "vendor_name": F, "vendor_gstin": F, "buyer_gstin": F, "invoice_no": F, "invoice_date": F,
+        "po_number": F, "taxable_value": F, "cgst": F, "sgst": F, "igst": F, "total": F },
+      "line_items": [ {"desc": "...", "qty": "2", "rate": "1500.00", "amount": "3000.00"} ] }
+    F = { "value": "<string>", "evidence": "<verbatim snippet copied from source_text>",
+          "pass2_value": "<string or null>" }
+
+
+5.2 AgentProposal (what the AI says it will do)
+    { "doc_id": "inv_001", "decision": "APPROVE" | "HOLD" | "REJECT",
+      "claims": [ { "text": "Total is within the auto-approval limit",
+                    "clause_id": "VP-4.1", "quoted_numbers": ["100000"] } ] }
+
+
+5.3 GuardReport
+    { "doc_id": "inv_001", "verdict": "PROCEED" | "ESCALATE" | "BLOCK",
+      "data_trust_score": 0-100, "components": {"S": 0-1, "A": 0-1, "P": 0-1},
+      "ai_overruled": false,
+      "claims": [ { "id": "C1", "statement": "Vendor GSTIN passes format and checksum",
+                    "kind": "hard" | "soft", "gate": "G1", "status": "PASS" | "FAIL" | "ESCALATE" | "UNSUPPORTED",
+                    "evidence": "27AAPFU0939F1ZV", "clause_id": "VP-2.2" | null } ],
+      "failed_gates": ["G2"], "explanation": "<= 3 sentences, template-generated from claims" }
+
+
+5.4 Workflow and Step
+    { "workflow_id": "wf_vendor_claim", "name": "Vendor claim entry", "version": 1,
+      "start_url": "/portal/claim",
+      "steps": [ {
+        "id": "s1", "action": "fill" | "click" | "select",
+        "intent": "Enter the vendor GSTIN",
+        "value_from": "vendor_gstin" | null, "literal": null,
+        "irreversible": false, "negative_terms": ["cancel", "clear", "back"],
+        "locator": {"strategy": "testid" | "id" | "name" | "role" | "css", "value": "#vendor_gstin"},
+        "alt_locators": [ ...same shape... ],
+        "fingerprint": Fingerprint,
+        "expect": {"kind": "value_equals" | "url_contains" | "text_visible" | "element_visible", "arg": "..."},
+        "screenshot": "data/runs/teach_x/s1.png", "narration": null } ] }
+    Fingerprint = { "tag", "id", "name", "classes": [], "text", "aria_label", "role", "type", "placeholder",
+                    "label_text", "nearby_text", "dom_path", "bbox": [x, y, w, h] (0-1, viewport relative),
+                    "form_id", "index_in_form" }
+
+
+5.5 HealEvent and RunLog
+    HealEvent = { "run_id", "step_id", "tier": 0 | 1 | 2 | 3,    # 3 = memory cache hit
+                  "old_locator", "new_locator", "score_top", "score_second", "margin",
+                  "llm_calls", "latency_ms", "verified": true, "human_confirmed": null | true | false,
+                  "old_fp": Fingerprint, "new_fp": Fingerprint }
+    RunLog = { "run_id", "workflow_id", "mode": "baseline" | "k0_tier1" | "k0_full",
+               "mutation": "M1".."M6" | null, "guard": GuardReport,
+               "steps": [ {"step_id", "status": "ok" | "healed" | "escalated" | "failed", "tier", "latency_ms",
+                           "heal": HealEvent | null, "screenshot": "path"} ],
+               "outcome": "SUCCESS" | "WRONG_ACTION" | "CRASH" | "ESCALATED" | "BLOCKED",
+               "llm_calls": 0, "tokens": 0, "total_ms": 0 }
+
+
+
+6. Module specifications
+6.1 Meridian Vendor Claim Portal and Chaos Mutator (Agent A)
+- Server-rendered pages under /portal: /portal/claim (form), /portal/review (summary), /portal/done (confirmation
+  with claim reference).
+- Claim form fields: Vendor GSTIN, Vendor Name, Invoice No., Invoice Date, PO Number, Taxable Value, CGST, SGST,
+  IGST, Total, Remarks (optional). Buttons: Review Claim (primary), Clear. Review page buttons: Submit for Payment
+  (irreversible, primary), Back, Cancel Claim (destructive, styled close to the primary).
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                         Page 5
+- APIs: POST /portal/api/claims (stores claim, appends ledger), POST /portal/api/cancel, GET /portal/api/state
+  (last claim, status, field values), POST /portal/api/reset, GET /portal/api/vendor/{gstin} (mock registry: active,
+  suspended, cancelled, not_found).
+- Mock registry is data/registry/vendors.json. State clearly in UI footer and README: mock registry; real GSTN
+  lookup needs an authorised API provider (roadmap).
+- Portal logic must not depend on IDs, classes or text that mutations change. Use internal data-k0-* attributes for
+  plumbing. Recorder, healer and Guard must ignore every data-k0* attribute.
+
+Chaos Mutator
+POST /portal/_k0/mutate {type, seed} stores the active mutation. static/mutations.js reads GET
+/portal/_k0/config on every page load and transforms the DOM deterministically from the seed. A small floating Mutate
+UI button in the portal calls the same endpoint (for judges).
+    ID       Mutation                       What it does
+
+    M1       rename_ids                     Replaces every id, name and class with seeded random tokens; fixes label for links
+
+    M2       relabel                        Replaces visible text with synonyms: Review Claim -> Preview Details; Submit for Payment ->
+                                            Confirm & Send; Vendor GSTIN -> Supplier Tax ID; Invoice No. -> Bill Reference
+
+    M3       reorder                        Shuffles field order and swaps button positions; reverses flex direction
+
+    M4       retag                          Turns <button> into <a role=button> or <div role=button tabindex=0>; wraps inputs in
+                                            extra containers
+
+    M5       decoy                          Adds a visually similar decoy next to each primary button (e.g. 'Cancel Claim' in the primary
+                                            position, 'Submit Draft')
+
+    M6       combo                          M1 + M2 + M3 + M5 together (the judge button)
+
+Acceptance: for each of M1-M6 an oracle Playwright test (allowed to use data-k0-*) completes the claim, proving the
+mutated portal is still solvable by a human.
+
+6.2 Guard engine (Agent B)
+guard.verify(extraction, proposal, ctx) -> GuardReport is a pure function (no network, no side effects; ledger and
+registry are passed in via ctx). The LLM is never used inside the Guard.
+
+Hard gates (any FAIL means BLOCK)
+    Gate     Check                                                                                                              Clause
+
+    G1       Vendor and buyer GSTIN: regex ^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$, state code in                            VP-2.2
+             01-38, 97, 99, mod-36 checksum (Appendix A)
+
+    G2       Arithmetic with Decimal: each line qty x rate = amount; sum of lines = taxable_value; taxable + cgst + sgst +      VP-3.1
+             igst = total, tolerance Rs 1.00
+
+    G3       Tax split: same state code (first 2 GSTIN chars) -> CGST = SGST > 0 and IGST = 0; different -> IGST > 0            VP-3.2,
+             and CGST = SGST = 0. Effective rate must be in policy.json.allowed_effective_gst_rates_pct                         VP-3.3
+
+    G4       Mock registry status of vendor GSTIN must be active                                                                VP-2.1
+
+    G5       Amount policy: total <= auto_limit PASS; <= manager_limit status ESCALATE; above manager_limit FAIL                VP-4.1-4.3
+
+    G6       Duplicate: (vendor_gstin, invoice_no) already in ledger                                                            VP-6.1
+
+    G7       Dates parse; not in the future; age <= max_invoice_age_days (policy.json)                                          VP-5.1,
+                                                                                                                                VP-5.2
+
+    G8       Citation integrity: every clause_id in the AgentProposal exists in the index, and every number in                  VP-7.2
+             quoted_numbers appears in that clause text
+
+    G9       Grounding: every money field, GSTIN and invoice_no value must appear in source_text after                          VP-7.1
+             normalisation (strip commas, spaces, 'Rs', rupee sign). A value absent from the document is a hallucinated
+             extraction
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                                   Page 6
+Soft components and score
+    S = fraction of fields whose evidence is found in source_text (rapidfuzz partial_ratio >= 95)
+        AND whose value appears inside that evidence
+    A = pass1/pass2 agreement fraction after normalisation        (passes == 2)
+        1.0 for pdf_text, 0.5 for image with one pass             (passes == 1)
+    P = fraction of policy claims whose retrieved top-3 clauses contain the claimed rule number/keywords
+
+    data_trust_score = round(100 * (0.45*S + 0.35*A + 0.20*P))                              # heuristic weights, label them as such
+
+    verdict = BLOCK     if any hard gate has status FAIL
+              ESCALATE elif any gate has status ESCALATE or data_trust_score < 70 or any UNSUPPORTED claim
+              PROCEED   else
+    ai_overruled = (proposal.decision == "APPROVE" and verdict != "PROCEED")
+
+- Every check emits a claim (atomic statement + evidence + status + clause_id). The explanation is built from a template
+  over failed claims, never by an LLM.
+- Be honest in UI copy: weights are hand-set heuristics; safety comes from the hard gates, not the score.
+- A valid GSTIN checksum proves format only. G4 uses the mock registry for status. Say so in the UI.
+
+
+6.3 Policy index (Agent B)
+- Source: data/policy/vendor_payment_sop.md (Appendix D, fictional company SOP). Parse by ### VP-x.y Title
+  headers into chunks {clause_id, title, text, numbers[], keywords[]}.
+- Index: embed each chunk with the Gemini embedding model; store vectors in data/policy/index.npz (cached). Lexical
+  score from own TF-IDF/BM25-lite. Retrieval score = 0.6 cosine + 0.4 lexical. If embeddings are unavailable, fall back to
+  lexical only and log a warning.
+- API: policy.retrieve(query, k=3) -> list[Clause] with scores. policy.exists(clause_id) and
+  policy.numbers_in(clause_id) for G8.
+- data/policy/policy.json holds the machine-readable twin of the SOP thresholds (Appendix D). CI test: every number
+  in policy.json must appear in its clause text. This keeps rules and cited text from drifting apart.
+
+
+6.4 Extractor (Agent B)
+- PDF input: pypdf text layer is source_text (ground truth for grounding). Ask Gemini for fields, line_items and a
+  verbatim evidence snippet per field, using JSON schema output at temperature 0.
+- Image input (P1): ask Gemini for a transcription into source_text and run two independent passes (different prompts)
+  to fill pass2_value. Any disagreement or failed G1/G2 on an image routes the field to the human escalation card.
+- Then ask Gemini for the AgentProposal from the extraction and the retrieved clauses (prompt in Appendix B). Guard
+  verifies and may overrule it.
+
+
+6.5 Recorder and compiler (Agent C)
+-    POST /api/teach/start launches headed Chromium with context.add_init_script(recorder.js) and
+     expose_binding('k0_event', ...). The recorder listens in the capture phase for click, change and blur of text inputs. It
+  ignores data-k0* attributes and noise (focus clicks followed by a fill).
+- For each event the backend computes the Fingerprint, builds locator candidates in priority testid > id > name >
+  role+name > css, saves a screenshot, attaches the latest narration, and pushes the step to the Console over SSE.
+- Variable binding: if a typed value equals a field of the loaded invoice after normalisation, set value_from to that field.
+  Otherwise store literal.
+- POST /api/teach/stop compiles: merge keystrokes, drop noise, set irreversible=true on the last click when its text
+  matches submit|pay|confirm|send|approve (operator can toggle), derive negative_terms (cancel, delete, reject,
+  back, clear), derive expect from the settled page (field value, next URL, or next heading), generate intent strings with
+  one batched cached LLM call, validate with pydantic, save data/workflows/<id>.json.
+- Workflow JSON must never contain data-k0 strings (test it).
+
+
+6.6 Runner and Healer (Agent C) - the core
+runner.run_workflow(wf, invoice, mode, mutation, emit) -> RunLog. One run at a time (global lock). Reset portal
+state before each benchmark run.
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                             Page 7
+Run loop
+- Gate: call guard.verify. BLOCK: stop, outcome BLOCKED, zero browser actions. ESCALATE: show a human card
+  and continue only on approval. PROCEED: continue.
+- For each step resolve the target through the tiers below, run the Patch Verifier, perform the action, check expect within
+  3 s.
+- After the last step read GET /portal/api/state and set outcome by comparing the portal's recorded state to the
+  expected claim (outcome-based oracle, not selector-based).
+
+Tiers
+    Tier    Name                       Logic
+
+    0       Exact                      Try the recorded locator, then alt_locators. Accept only if exactly one visible match and
+                                       similarity(recorded_fp, live_fp) >= 0.55. The similarity guard stops a reused ID that now
+                                       points at something different.
+
+    3       Memory                     Look up a stored patch for (workflow, step, page signature) in SQLite. If found, apply it through the
+                                       Verifier. 0 LLM calls.
+
+    1       Fingerprint scoring        Enumerate visible, action-compatible elements. Score each (formula below). Accept if top >= 0.62 and
+                                       top - second >= 0.12. Exclude candidates whose text hits negative_terms unless the recorded
+                                       fingerprint also does.
+
+    2       LLM selection              Send intent, action, recorded fingerprint and the top-8 candidates as compact JSON (index, tag, text,
+                                       label, role, type, attribute subset, bbox centre), optional screenshot. Output {choice: index|null,
+                                       confidence: 0-1, reason} at temperature 0. choice null or confidence < 0.7 means fail safe:
+                                       pause for the human.
+
+Order of attempts: Tier 0, Tier 3, Tier 1, Tier 2. Modes: baseline = Tier 0 using only the recorded locator with no similarity
+guard (the naive replay a judge compares against). k0_tier1 = Tiers 0, 3, 1. k0_full = all tiers.
+    tier1_score = 0.30*text_sim + 0.20*label_sim + 0.10*role_tag_match + 0.10*type_match
+                + 0.10*attr_overlap + 0.10*dom_path_sim + 0.10*pos_proximity
+    text_sim   = max token_set_ratio(candidate text/aria/value/placeholder, recorded text) / 100
+    label_sim = token_set_ratio(candidate label/nearby text, recorded label/nearby text) / 100
+    attr_overlap = Jaccard over tokens of id, name, classes, placeholder
+    pos_proximity = 1 - min(1, euclidean(bbox centres) / 0.5)
+
+
+Patch Verifier
+- Element is visible, enabled, tag/role compatible with the action (fill needs input/textarea/select).
+- Element text does not match any negative_terms unless intended.
+- After acting, expect holds within 3 s. For fills, read the value back. If it fails, try the next-best candidate once (only for
+  non-irreversible steps); otherwise stop and escalate.
+- Human gate: if irreversible and (tier 2, or tier 1 with margin < 0.20) then pause and show the live screenshot with the
+  target highlighted, the reason, and Approve / Reject. In benchmarks nothing auto-approves; such runs count as
+  ESCALATED.
+- On a verified heal write the new locator and fingerprint to the workflow (version + 1), store a HealEvent and a memory
+  patch, and emit an SSE event with an old-vs-new DOM diff.
+
+Outcome categories (benchmark)
+    Outcome                    Definition
+
+    SUCCESS                    Portal state shows the expected claim submitted with correct field values
+
+    WRONG_ACTION               Portal state shows a cancelled claim, a draft, or wrong field values (the dangerous failure; must be reported,
+                               never hidden)
+
+    CRASH                      Exception or timeout; no state change
+
+    ESCALATED                  Paused for a human; nothing wrong was done
+
+    BLOCKED                    Guard blocked the run before any browser action
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                                 Page 8
+6.7 Counterfactual preflight (P1, Agent B)
+guard/counterfactuals.py takes a PROCEED extraction and derives 7 perturbations: vendor suspended; date one day in
+the future; date 120 days old; total scaled above the manager limit; last GSTIN character changed; duplicate invoice added
+to a temporary ledger; CGST/IGST split flipped. Each goes through guard.verify (pure). The Console shows expected vs
+actual verdict per variant and a banner 'Preflight: n/7 unsafe variants blocked'. Name it Shadow Sandbox (policy twin)
+and say it tests the rule engine, not the browser.
+
+6.8 Benchmarks (Agents B and C)
+Heal benchmark (bench/heal_bench.py)
+- Mutations M1-M6 x seeds 1-5 = 30 mutated portals. Methods: baseline, k0_tier1, k0_full. Clean invoice (PROCEED).
+  Headless, portal reset per run.
+- Metrics per method: success %, wrong-action %, escalated %, crash %, mean LLM calls, mean latency, tokens.
+- Memory experiment: after healing M6 once, rerun the same mutation and record LLM calls (expected 0).
+- P1: Fragility Forecast vs observed break rate of baseline per step.
+
+Guard benchmark (bench/guard_bench.py, data from bench/make_invoices.py)
+- 60 synthetic invoices: 20 clean + 40 with exactly one injected fault (bad checksum, line sum mismatch, wrong tax split,
+  suspended vendor, expired, future-dated, duplicate, over limit, disallowed rate). Ground truth in
+  data/fixtures/ground_truth.json. Rules are tested on ground-truth extractions for determinism.
+- Hallucination injection: 30 trials corrupting one field to a value absent from the source. Fabricated citation injection:
+  20 trials citing a non-existent clause or a wrong number.
+- Metrics: recall per fault type, false-block rate on clean invoices, injection catch rates. Report n and be honest about
+  small samples.
+- P1: real LLM extraction accuracy on 20 invoices (field exact match %).
+
+Write bench/results.json. The Results tab reads only this file. Include generated_at, n, and the git commit hash.
+
+6.9 LLM wrapper (Agent B)
+-     call_json(name, prompt, schema, images=None, temperature=0) -> dict. Cache key = sha256(model + prompt +
+  image hashes). Cache files in K0_CACHE_DIR.
+- K0_OFFLINE=1: serve only from cache; raise CacheMiss otherwise. Exponential backoff on HTTP 429. Count calls and
+  token usage in a thread-safe counter that the runner reads.
+- scripts/warm_cache.py runs the full demo path once so everything is cached before the demo.
+
+
+6.10 Console UI (Agent D)
+    Tab               Contents
+
+    1 Verify          Upload invoice. Extracted fields with evidence highlighted in the source text. AI proposal. Guard verdict banner
+                      (green/amber/red), claims table, Data Trust Score with the heuristic-weights label, 'AI overruled' flag. Buttons: Inject
+                      hallucination, Run preflight (P1).
+
+    2 Teach           Start/Stop teaching. Steps appear live with screenshots. Narration box (typed; voice is P1). Workflow viewer: nodes
+                      with action, intent, irreversible flag, badge (P1), fragility (P1).
+
+    3 Run             Pick workflow + invoice. Mutation dropdown + Apply. Side-by-side panels: Baseline replay vs KINETIC-ZERO with
+                      live step log and screenshots. Human-confirm modal. Heal diff panel (old vs new fingerprint, tier, score, margin).
+
+    4 Results         Heal and Guard benchmark tables from results.json, Run benchmark button, run timeline (P1), audit export (P2).
+
+- One SSE stream GET /api/events with JSON lines {type, ts, payload}. Types: guard, teach_step, run_step, heal,
+  confirm_needed, run_done, bench_progress.
+- Visual style: clean, high contrast, large text for projector. Green/amber/red badges only. No animation work.
+- Works with no internet (no CDN, no web fonts).
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                                 Page 9
+6.11 Audit report and export (P2)
+Audit HTML from a RunLog: inputs, Guard report, formulas, clause citations, heal diffs, timeline. Each entry carries hash =
+sha256(prev_hash + canonical_json(entry)); show the final hash and call it tamper-evident, not signed. Export:
+generate a standalone Playwright Python script from the (healed) workflow.
+
+7. HTTP API summary
+ Method + path                                                            Purpose
+
+ GET /health                                                              Liveness
+
+ POST /api/invoices/upload                                                Upload PDF/image; returns InvoiceExtraction + AgentProposal
+
+ POST /api/guard/verify                                                   Body {doc_id, inject?: 'hallucination'|'citation'}; returns GuardReport
+
+ POST /api/guard/preflight                                                Returns the 7 counterfactual results (P1)
+
+ POST /api/teach/start | /api/teach/stop | POST /api/teach/narrate        Teaching session lifecycle; narration text
+
+ GET /api/workflows | GET /api/workflows/{id}                             List/read workflows
+
+ POST /api/run                                                            Body {workflow_id, doc_id, mode, mutation?}; starts run, returns
+                                                                          run_id
+
+ POST /api/run/{id}/confirm                                               Body {approve: bool} for the human gate
+
+ POST /portal/_k0/mutate | GET /portal/_k0/config | POST                  Chaos controls and reset
+ /portal/api/reset
+
+ POST /api/bench/run | GET /api/bench/results                             Run benchmarks (SSE progress) / read results.json
+
+ GET /api/events                                                          SSE stream
+
+
+8. Parallel work split for the Agent Manager
+Four agents, disjoint directories, frozen contracts. The human owns app/main.py wiring and merges.
+ Agent                      Owns                                                                    Delivers
+
+ A - Portal                 app/portal/, tests/portal/, data/registry/,                             F1, F2; oracle tests for M1-M6;
+                            data/ledger.json                                                        state/reset/registry APIs
+
+ B - Guard + Policy +       app/guard/, app/policy/, app/llm.py,                                    F3, F4, F5, F10, F14, guard benchmark, LLM
+ LLM                        app/extractor.py, data/policy/, data/fixtures/,                         cache
+                            bench/make_invoices.py, bench/guard_bench.py,
+                            tests/guard/, tests/policy/
+
+ C - Runner                 app/recorder.py, app/runner.py, app/healer/,                            F6, F7, F11 (fragility), heal benchmark
+                            app/memory.py, bench/heal_bench.py, tests/runner/
+
+ D - Console                app/static/console/, app/main.py (router wiring only),                  F8, F12, F15, F16; builds against
+                            scripts/                                                                contracts/examples/ until real backends
+                                                                                                    land
+
+
+Interfaces between agents (do not change)
+ guard.verify(extraction: InvoiceExtraction, proposal: AgentProposal | None, ctx: GuardContext) -> GuardReport
+   GuardContext = { registry: dict, ledger: list, policy: PolicyIndex, today: date }
+ policy.retrieve(query: str, k: int = 3) -> list[Clause]
+ llm.call_json(name: str, prompt: str, schema: dict, images: list[bytes] | None = None,
+               temperature: float = 0) -> dict
+ runner.run_workflow(wf: Workflow, invoice: InvoiceExtraction, mode: str, mutation: str | None,
+                     emit: Callable[[dict], None]) -> RunLog
+ Portal HTTP endpoints exactly as listed in 6.1 and Section 7.
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                                     Page 10
+9. Timeline, checkpoints and kill switches
+Clock times assume work starts about 10:00 am. If you start later, keep the 5:30 pm feature freeze and compress the
+middle blocks. Never move the submission buffer.
+ Time                      Milestone                                  Outputs
+
+ 10:00-10:30               M0 Setup                                   Repo, venv, .env, Gemini hello via llm.call_json, contracts +
+                                                                      examples, FastAPI /health, pytest runs
+
+ 10:30-12:30               M1 Foundations (parallel A, B, C, D)       Portal + mutator; Guard G1-G7 + tests; recorder skeleton + Tier 0; console
+                                                                      shell on fixtures
+
+ 12:30-13:00               CP1 + break                                Portal completable by hand; Guard tests green; recorder emits valid
+                                                                      workflow
+
+ 13:00-15:00               M2 Core                                    Policy index + extractor + G8/G9; Tiers 1-3 + Verifier + memory; tabs 1-3
+                                                                      wired
+
+ 15:00-16:00               M3 Integration                             scripts/demo_e2e.py passes (Section 10)
+
+ 16:00                     CP2                                        Full demo path works once, even if ugly. If more than 45 min behind: drop
+                                                                      all P1 except F10
+
+ 16:00-17:30               M4 Benchmarks + P1                         Real results.json; Results tab; then P1 in order F10, F11, F15, F12,
+                                                                      F13, F14
+
+ 17:30                     FEATURE FREEZE                             Only bug fixes after this
+
+ 17:30-18:30               M5 Hardening                               Warm cache; offline mode test; backup demo video; README +
+                                                                      architecture diagram; screenshots
+
+ 18:30-19:30               M6 Submission                              Package, rehearse twice, submit. Hard stop 19:30
+
+ 20:00                     Deadline                                   30 minute buffer is for upload problems only
+
+
+Kill switches (apply without asking)
+ Trigger                                             Action
+
+ Portal not done at CP1                              Drop M3 and M4 first. Keep M1, M2, M5 (the decoy tests false heals) and redefine M6 as
+                                                     M1+M2+M5
+
+ Tier 2 LLM unstable                                 Ship tiers 0, 3, 1 + human gate. Report k0_tier1 honestly; still shows heals and the
+                                                     safety story
+
+ Extractor unreliable                                Demo from ground_truth.json fixtures; show LLM extraction as experimental;
+                                                     disclose in the pitch
+
+ Teach mode flaky                                    Ship a pre-recorded workflow JSON; show recorder only as a short clip
+
+ Benchmarks late                                     Reduce to 3 seeds; label n in the table
+
+ Any P1 item over 30 min                             Cut it, log it
+
+
+10. Acceptance tests (definition of done)
+ Milestone                     Pass criteria
+
+ M0                            GET /health ok; pytest runs; llm.call_json returns JSON and caches; all
+                               contracts/examples/*.json validate
+
+ M1 Portal                     Manual claim completes; reset works; oracle test completes the claim under each of M1-M6
+
+ M1 Guard                      >= 25 unit tests green; 27AAPFU0939F1ZV passes G1; flipping its last char fails; Decimal tolerance tests;
+                               duplicate and date tests
+
+ M1 Recorder                   A teach session yields a schema-valid workflow with >= 12 steps, last step irreversible=true, no
+                               data-k0 strings
+
+ M2 Policy                     'manager approval limit' retrieves VP-4.2 in top 1; CI test: policy.json numbers appear in clause text;
+                               fabricated clause VP-9.9 fails G8
+
+ M2 Healer                     Tests heal M1-M4 to SUCCESS; decoy test (M5) never produces WRONG_ACTION (SUCCESS or
+                               ESCALATED only); second run after a heal shows 0 LLM calls and tier 3
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                                Page 11
+ Milestone                      Pass criteria
+
+ M3 E2E                         scripts/demo_e2e.py: (a) clean invoice PROCEED, run, mutate M6, heal, portal state SUCCESS; (b)
+                                suspended-vendor invoice BLOCK with zero browser actions; (c) injected hallucination BLOCK with
+                                ai_overruled=true
+
+ M4                             results.json generated by real runs; Results tab renders; numbers match the file
+
+ M5                             K0_OFFLINE=1 run of the E2E passes from cache; backup video exists; README has quick start under 5
+                                commands
+
+
+11. Demo script (3 minutes) and pitch language
+ Time                 On screen                                                     Say
+
+ 0:00-0:20            Title + one-liner                                             Back-office teams live in portals with no API. RPA breaks on
+                                                                                    every UI change; AI agents can act on things they misread.
+                                                                                    We fix both.
+
+ 0:20-0:55            Verify tab: clean invoice, evidence highlights, Guard         The AI extracted these fields, but we do not trust it. Every
+                      PROCEED                                                       value is grounded in the document and every rule is
+                                                                                    deterministic Python.
+
+ 0:55-1:25            Suspended-vendor invoice BLOCK; Inject                        The Guard stopped the run before any browser action, and
+                      hallucination BLOCK with 'AI overruled'; preflight            overruled the AI's own approval.
+                      table (P1)
+
+ 1:25-1:45            Teach tab: pre-recorded workflow nodes                        A worker showed this once. It compiled into a workflow with
+                                                                                    variables.
+
+ 1:45-2:40            Run tab: Mutate (judge picks, or M6). Baseline fails;         The portal changed. The naive replay broke. We repaired the
+                      KINETIC-ZERO heals; amber badge; confirm modal;               step, verified it, and asked a human before the irreversible
+                      success; heal diff                                            click.
+
+ 2:40-3:00            Results tab                                                   Measured on N runs: heal success, wrong-action rate, LLM
+                                                                                    calls per run. We report the failures too.
+
+
+Allowed claims vs banned claims
+ Say                                                                          Never say
+
+ Blocks unverified actions and reports its catch rate                         Guarantees zero hallucination / never executes a wrong action
+
+ Hard gates provide safety; the score ranks soft evidence                     Our risk formula proves correctness
+
+ Mock registry in the demo; real GSTN lookup needs an authorised              Verified against the live GST portal
+ provider
+
+ Self-healing with a measured wrong-action rate                               Never seen before / first self-healing automation
+
+ Teach by doing once, recorded in a controlled browser                        It watches any screen and understands it
+
+
+Judge Q&A cheat sheet
+ Question                                            Answer
+
+ How is this different from browser-use              Same family for recording and locator healing. We add a verification gate before any
+ workflow-use or Healenium?                          action, patch verification with a human gate on irreversible steps, evidence-based audit,
+                                                     and a published wrong-action rate.
+
+ What if the healer clicks the wrong element?        Tier 0 rejects look-alike IDs, Tier 1 needs a score and margin, Tier 2 needs confidence,
+                                                     the Verifier checks the post-condition, and irreversible steps pause for a human. The
+                                                     benchmark counts WRONG_ACTION explicitly.
+
+ Are the score weights calibrated?                   No. Hand-set heuristics, stated as such. Safety comes from hard gates that no score can
+                                                     override.
+
+ Does the checksum prove the GSTIN is                It proves format and typo-resistance only. Status comes from a mock registry in the demo;
+ real?                                               production needs an authorised API.
+
+ Why not just call GST APIs?                         Many portals used by MSMEs and hospitals expose none. Where APIs exist, the same
+                                                     Guard still applies.
+
+ Is it just a Gemini wrapper?                        No. Guard rules, healing algorithm, policy index, memory and benchmarks are our own
+                                                     code. The LLM extracts, proposes and breaks ties.
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                                    Page 12
+    Question                                         Answer
+
+    Can it handle real portals?                      Teach mode works in any page in the controlled browser. The demo uses our own portal
+                                                     so we can reset and benchmark it. A browser extension is the roadmap for production.
+
+
+12. Guardrails and do-not list
+-     Never automate a real government, bank or insurance portal. Never handle real credentials, OTPs or CAPTCHAs.
+-     Synthetic data only. No real names, GSTINs, PANs, phone numbers or invoices.
+-     Do not copy code from workflow-use or any AGPL project. Cite related work in the README instead.
+-     No CDN assets, web fonts, analytics or network calls other than Gemini. The demo must run on a flaky network.
+-     Do not invent GST legal rules. Rates and limits come from policy.json and are described as company SOP. Add a
+      README note: verify current statutory rates before any real use.
+-     Do not hard-code outcomes, benchmark numbers or selectors that key off data-k0*.
+-     Do not add dependencies, frameworks or pages outside this document. Do not refactor frozen contracts.
+-     If a requirement here is impossible, apply Section 9, log it, and tell the human. Do not silently substitute.
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                          Page 13
+Appendix A. GSTIN checksum (verified reference)
+A GSTIN has 15 characters: 2-digit state code, 10-character PAN, entity code, the letter Z, and a check character
+computed with Luhn mod-36 over the first 14 characters. Public sources note that GSTN does not publish the formula, so
+treat this as the widely used method. Verified test vector: 27AAPFU0939F1ZV is valid (check char V). Changing the last
+character must fail. Other sample numbers found in blogs did not pass; generate every fixture GSTIN with
+gstin_checksum, never type one by hand.
+
+ CH = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+ def gstin_checksum(first14: str) -> str:
+     total = 0
+     for i, c in enumerate(first14.upper()):
+         v = CH.index(c)
+         prod = v * (1 if i % 2 == 0 else 2)
+         total += prod // 36 + prod % 36
+     return CH[(36 - total % 36) % 36]
+
+ def gstin_ok(g: str) -> bool:
+     g = g.strip().upper()
+     return len(g) == 15 and g[13] == "Z" and gstin_checksum(g[:14]) == g[14]
+
+ assert gstin_ok("27AAPFU0939F1ZV") and not gstin_ok("27AAPFU0939F1ZX")
+
+
+
+Appendix B. Prompt templates
+Keep prompts in app/prompts.py. All use JSON output and temperature 0. Replace braces with real values.
+
+B.1 Invoice extraction
+ SYSTEM: You extract fields from a vendor invoice. Use ONLY the text provided. Never infer or
+ guess. If a field is absent return value "" and evidence "". For every non-empty field,
+ `evidence` MUST be a verbatim snippet copied from the text that contains the value.
+ Money values: digits and decimal point only, no currency symbol or commas.
+ Dates: ISO YYYY-MM-DD.
+ USER: <document_text>{source_text}</document_text>
+ Return JSON matching the InvoiceExtraction.fields and line_items schema.
+
+
+B.2 Agent proposal
+ SYSTEM: You are a payment-processing assistant. Decide APPROVE, HOLD or REJECT for this invoice
+ using ONLY the extracted fields and the policy clauses given. Each claim you make must cite a
+ clause_id from the provided clauses and list any numbers you rely on in quoted_numbers.
+ Do not cite a clause that is not provided.
+ USER: <fields>{fields_json}</fields> <clauses>{top_k_clauses_with_ids}</clauses>
+ Return JSON matching AgentProposal.
+
+
+B.3 Heal selection (Tier 2)
+ SYSTEM: You repair a broken web automation step. Pick the candidate element that matches the
+ step intent. If none clearly matches, return choice null. Never pick an element whose text
+ suggests cancel, delete, reject, back or clear unless the intent says so.
+ USER: intent: {intent}   action: {action}   page: {url} | {title}
+ recorded_element: {recorded_fingerprint_compact}
+ candidates: [ {"i":0,"tag":"a","text":"Confirm & Send","label":"","role":"button",
+                "type":"","attrs":{...},"center":[0.62,0.81]}, ... ]
+ Return JSON {"choice": <int or null>, "confidence": <0-1>, "reason": "<one sentence>"}
+
+
+B.4 Step intent labelling
+ SYSTEM: For each recorded step write a short imperative intent (max 8 words). Use the
+ narration if present, else the label/text. Return a JSON list aligned with the input order.
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                        Page 14
+Appendix C. Fixtures
+- Vendors in vendors.json: 10 synthetic vendors with generated valid GSTINs across at least 3 state codes: 7 active, 2
+  suspended, 1 cancelled. One buyer GSTIN (Maharashtra, code 27).
+- Invoices (60): 20 clean covering intra-state and inter-state, amounts from Rs 8,000 to Rs 2,40,000. 40 faulty, one fault
+  each: F1 bad checksum, F2 line sum mismatch, F3 wrong tax split, F4 suspended vendor, F5 expired (120 days), F6
+  future-dated, F7 duplicate, F8 over manager limit, F9 disallowed rate. Generate PDFs with reportlab so a text layer
+  exists.
+- Demo set (keep fixed): demo_clean.pdf (Rs 84,500, active vendor, intra-state), demo_manager.pdf (Rs 1,85,000,
+  ESCALATE), demo_suspended.pdf (BLOCK), demo_overlimit.pdf (BLOCK).
+- Ground truth for every invoice in ground_truth.json (all fields plus the injected fault label).
+
+
+Appendix D. Policy SOP and policy.json
+Write data/policy/vendor_payment_sop.md with exactly these 14 clauses under ### VP-x.y Title headers. This is a
+fictional company SOP (Meridian Traders Pvt Ltd), not law.
+    Clause                               Text
+
+    VP-1.1 Scope                         This SOP applies to all vendor invoices submitted through the Vendor Claim Portal.
+
+    VP-2.1 Vendor eligibility            A vendor must hold an active GSTIN in the registry at the time of payment. Suspended or cancelled
+                                         vendors are rejected.
+
+    VP-2.2 GSTIN validity                A GSTIN must be 15 characters and pass the checksum. Invoices with an invalid GSTIN are
+                                         returned to the vendor.
+
+    VP-3.1 Invoice arithmetic            Line amounts, taxable value, taxes and total must reconcile within Rs 1.00.
+
+    VP-3.2 Tax split                     For intra-state supply (same state code) CGST and SGST are equal and IGST is nil. For inter-state
+                                         supply only IGST applies.
+
+    VP-3.3 Accepted rates                The effective GST rate on an invoice must be 5% or 18% unless the Finance Head grants an
+                                         exception.
+
+    VP-4.1 Auto-approval limit           Invoices up to Rs 1,00,000 may be auto-approved when every other check passes.
+
+    VP-4.2 Manager approval              Invoices from Rs 1,00,001 to Rs 2,50,000 require manager approval before payment.
+
+    VP-4.3 Finance Head approval         Invoices above Rs 2,50,000 must not be processed through the portal and are routed to the Finance
+                                         Head.
+
+    VP-5.1 Invoice age                   Invoices older than 90 days are not payable without a Finance Head exception.
+
+    VP-5.2 Future dates                  Invoices dated in the future are rejected.
+
+    VP-6.1 Duplicates                    An invoice number from the same vendor GSTIN is paid once only.
+
+    VP-7.1 Evidence                      Every value used for payment must be traceable to the source document. Values that cannot be
+                                         verified are escalated to a human.
+
+    VP-7.2 Audit                         Every automated action is logged with its inputs, checks and clause citations.
+
+    { "auto_limit": 100000, "manager_limit": 250000, "max_invoice_age_days": 90,
+      "allowed_effective_gst_rates_pct": [5, 18], "money_tolerance": "1.00",
+      "clause_for": { "auto_limit": "VP-4.1", "manager_limit": "VP-4.2", "max_invoice_age_days": "VP-5.1",
+                      "allowed_effective_gst_rates_pct": "VP-3.3" } }
+
+
+
+Appendix E. Kickoff prompts for the Agent Manager
+Paste the shared preamble plus one agent block. The workspace must contain docs/SPEC.pdf and docs/SPEC.txt.
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                                            Page 15
+    SHARED PREAMBLE
+    You are building KINETIC-ZERO for a 12-hour hackathon. Read docs/SPEC.txt completely; it is the
+    only source of truth and mirrors docs/SPEC.pdf. First post an Implementation Plan artifact for
+    your workstream, mapped to milestones M0-M6 and to files. Follow Section 1 rules. Own only the
+    directories in Section 8. Finish P0 before P1. Do not add features or dependencies. Attach test
+    output and screenshots as artifacts. If blocked 15 minutes, apply Section 9 and log it.
+
+    AGENT A (Portal)       Build F1 and F2 (Section 6.1) and tests/portal. Deliver M1 by 12:30.
+    AGENT B (Guard)        Build F3, F4, F5, F10, llm.py and fixtures (Sections 6.2-6.4, 6.7, 6.9, App A-D).
+                           Deliver G1-G7 + tests by 12:30, policy + extractor + G8/G9 by 15:00.
+    AGENT C (Runner)       Build F6, F7 and heal_bench (Sections 6.5, 6.6, 6.8). Use only the portal HTTP
+                           endpoints and the frozen contracts. Tier 0 + recorder by 12:30, tiers 1-3 by 15:00.
+    AGENT D (Console)      Build F8 against contracts/examples until backends land (Section 6.10).
+                           Offline-capable, no CDN. Wire real endpoints as they appear.
+
+
+
+Appendix F. Final submission checklist
+-    [ ] Public repo with README: problem, architecture diagram, quick start (5 commands), honest limitations, related work
+     (workflow-use, Healenium, Testim), synthetic-data note
+-    [ ] bench/results.json committed with real numbers and n
+-    [ ] Demo video (2-3 min) recorded from the offline cache run, plus the live-demo backup
+-    [ ] Screenshots: Verify BLOCK, heal diff, Results tab
+-    [ ] .env.example present, no secrets in git history
+-    [ ] Pitch deck or one-pager mapping to the track: reasoning chain (Guard + 4-tier healer), agentic tool use (Playwright +
+     validators), custom indexing (clause index + episodic memory), measured accuracy and efficiency (Results tab)
+-    [ ] Rehearsed twice with a timer; fallback plan agreed (video, offline mode)
+
+
+
+
+KINETIC-ZERO | Build Specification v1.0 (frozen) | Source of truth for Antigravity agents                              Page 16
+

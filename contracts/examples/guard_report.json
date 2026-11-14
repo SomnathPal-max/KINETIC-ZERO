@@ -1,0 +1,96 @@
+{
+  "doc_id": "inv_001",
+  "verdict": "PROCEED",
+  "data_trust_score": 96,
+  "components": {
+    "S": 1.0,
+    "A": 1.0,
+    "P": 0.8
+  },
+  "ai_overruled": false,
+  "claims": [
+    {
+      "id": "C1",
+      "statement": "Vendor GSTIN passes format and checksum",
+      "kind": "hard",
+      "gate": "G1",
+      "status": "PASS",
+      "evidence": "27AAPFU0939F1ZV",
+      "clause_id": "VP-2.2"
+    },
+    {
+      "id": "C2",
+      "statement": "Invoice arithmetic reconciles exactly",
+      "kind": "hard",
+      "gate": "G2",
+      "status": "PASS",
+      "evidence": "3000.00 + 270.00 + 270.00 = 3540.00",
+      "clause_id": "VP-3.1"
+    },
+    {
+      "id": "C3",
+      "statement": "Intra-state tax split verified: CGST = SGST and IGST = 0",
+      "kind": "hard",
+      "gate": "G3",
+      "status": "PASS",
+      "evidence": "State 27 matches buyer state 27",
+      "clause_id": "VP-3.2"
+    },
+    {
+      "id": "C4",
+      "statement": "Vendor status in registry is active",
+      "kind": "hard",
+      "gate": "G4",
+      "status": "PASS",
+      "evidence": "27AAPFU0939F1ZV active",
+      "clause_id": "VP-2.1"
+    },
+    {
+      "id": "C5",
+      "statement": "Total 3540.00 <= auto limit 100000",
+      "kind": "hard",
+      "gate": "G5",
+      "status": "PASS",
+      "evidence": "3540.00 <= 100000",
+      "clause_id": "VP-4.1"
+    },
+    {
+      "id": "C6",
+      "statement": "No duplicate found in ledger",
+      "kind": "hard",
+      "gate": "G6",
+      "status": "PASS",
+      "evidence": "INV-2026-089 unique",
+      "clause_id": "VP-6.1"
+    },
+    {
+      "id": "C7",
+      "statement": "Date 2026-11-01 is past and within 90 days",
+      "kind": "hard",
+      "gate": "G7",
+      "status": "PASS",
+      "evidence": "Age 13 days <= 90",
+      "clause_id": "VP-5.1"
+    },
+    {
+      "id": "C8",
+      "statement": "All cited clauses exist and cited numbers appear in text",
+      "kind": "hard",
+      "gate": "G8",
+      "status": "PASS",
+      "evidence": "VP-4.1, VP-2.2 verified",
+      "clause_id": "VP-7.2"
+    },
+    {
+      "id": "C9",
+      "statement": "All money values, GSTINs, and invoice number grounded in source document",
+      "kind": "hard",
+      "gate": "G9",
+      "status": "PASS",
+      "evidence": "11/11 fields grounded",
+      "clause_id": "VP-7.1"
+    }
+  ],
+  "failed_gates": [],
+  "explanation": "All 9 deterministic verification gates passed. Invoices within Rs 1,00,000 threshold auto-approved under VP-4.1."
+}

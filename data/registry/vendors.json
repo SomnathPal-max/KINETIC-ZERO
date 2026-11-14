@@ -1,0 +1,79 @@
+{
+  "buyer": {
+    "gstin": "27AAAPL1234F1Z8",
+    "name": "Meridian Traders Pvt Ltd",
+    "state_code": "27",
+    "state_name": "Maharashtra"
+  },
+  "vendors": {
+    "27AAPFU0939F1ZV": {
+      "name": "Apex Industrial Supplies",
+      "state_code": "27",
+      "state_name": "Maharashtra",
+      "status": "active",
+      "msme_category": "Micro",
+      "udyam_reg_no": "UDYAM-MH-01-0028491",
+      "credit_days_allowed": 45
+    },
+    "27BCDFG1234A1Z0": {
+      "name": "Bharat Precision Tools",
+      "state_code": "27",
+      "state_name": "Maharashtra",
+      "status": "active",
+      "msme_category": "Small",
+      "udyam_reg_no": "UDYAM-MH-02-0051920",
+      "credit_days_allowed": 45
+    },
+    "27XYZAB5678C1Z6": {
+      "name": "Western Logistics Corp",
+      "state_code": "27",
+      "state_name": "Maharashtra",
+      "status": "suspended"
+    },
+    "27KLMNO9012D1ZW": {
+      "name": "Deccan Chemical Works",
+      "state_code": "27",
+      "state_name": "Maharashtra",
+      "status": "active",
+      "msme_category": "Medium",
+      "udyam_reg_no": "UDYAM-MH-03-0091823",
+      "credit_days_allowed": 60
+    },
+    "29PQRST3456E1ZN": {
+      "name": "Silicon Silicones Bengaluru",
+      "state_code": "29",
+      "state_name": "Karnataka",
+      "status": "active"
+    },
+    "29UVWXY7890F1Z8": {
+      "name": "Mysore Paper Products",
+      "state_code": "29",
+      "state_name": "Karnataka",
+      "status": "active"
+    },
+    "29ABCDE1122G1ZZ": {
+      "name": "Southern Electricals Ltd",
+      "state_code": "29",
+      "state_name": "Karnataka",
+      "status": "cancelled"
+    },
+    "07FGHIJ3344H1ZR": {
+      "name": "Capital Office Furniture",
+      "state_code": "07",
+      "state_name": "Delhi",
+      "status": "active"
+    },
+    "07KLMNO5566I1ZC": {
+      "name": "Northern Security Systems",
+      "state_code": "07",
+      "state_name": "Delhi",
+      "status": "suspended"
+    },
+    "07PQRST7788J1ZZ": {
+      "name": "Indraprastha Packaging Solutions",
+      "state_code": "07",
+      "state_name": "Delhi",
+      "status": "active"
+    }
+  }
+}

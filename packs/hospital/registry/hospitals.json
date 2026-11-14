@@ -1,0 +1,22 @@
+{
+  "HSP-001": {
+    "name": "Apollo Super Specialty Hospital",
+    "network_tier": "Tier-1",
+    "status": "EMPANELLED"
+  },
+  "HSP-002": {
+    "name": "Fortis Memorial Medical Center",
+    "network_tier": "Tier-1",
+    "status": "EMPANELLED"
+  },
+  "HSP-003": {
+    "name": "Max Healthcare Institute",
+    "network_tier": "Tier-2",
+    "status": "EMPANELLED"
+  },
+  "HSP-999": {
+    "name": "City Community Nursing Home",
+    "network_tier": "Non-Network",
+    "status": "NON_EMPANELLED"
+  }
+}

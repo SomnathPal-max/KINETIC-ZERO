@@ -1,0 +1,13 @@
+{
+  "auto_limit": 100000,
+  "manager_limit": 250000,
+  "max_invoice_age_days": 90,
+  "allowed_effective_gst_rates_pct": [5, 18],
+  "money_tolerance": "1.00",
+  "clause_for": {
+    "auto_limit": "VP-4.1",
+    "manager_limit": "VP-4.2",
+    "max_invoice_age_days": "VP-5.1",
+    "allowed_effective_gst_rates_pct": "VP-3.3"
+  }
+}

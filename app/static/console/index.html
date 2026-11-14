@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KINETIC-ZERO Console | General-Purpose Portal Agent with RAG</title>
+  <link rel="stylesheet" href="/static/console/console.css?v=4.0">
+</head>
+<body>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Enterprise Application Header -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <div class="brand-logo">K0</div>
+      <div class="brand-title">
+        <span>KINETIC-ZERO</span>
+        <span class="brand-env">v2.0 General-Purpose</span>
+      </div>
+      <div class="brand-divider"></div>
+      <span class="brand-desc">Deterministic Policy Gating & Self-Healing Automation for Web Portals</span>
+    </div>
+
+    <!-- Domain Pack Selector -->
+    <div class="pack-switcher">
+      <button id="pack-pill-finance" class="pack-pill active" onclick="switchDomainPack('finance')">
+        <span>⚡ Finance / Vendor Claims</span>
+      </button>
+      <button id="pack-pill-hospital" class="pack-pill" onclick="switchDomainPack('hospital')">
+        <span>🏥 Healthcare / Pre-Auth</span>
+      </button>
+    </div>
+
+    <div class="header-actions">
+      <div class="connection-status" id="llm-status-box">
+        <div class="status-dot" id="llm-dot" style="background-color: var(--status-emerald);"></div>
+        <span id="llm-status-text">LLM: OLLAMA (llama3.2:latest)</span>
+      </div>
+      <a id="target-portal-link" href="/portal/claim" target="_blank" class="btn btn-secondary">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        <span id="target-portal-text">Target Portal A</span>
+      </a>
+      <div class="connection-status">
+        <div class="status-dot"></div>
+        <span id="sse-status">RUNTIME CONNECTED</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav class="tabs-navigation">
+    <button class="tab-item active" onclick="switchTab('verify')">
+      <span>1. Verify & TruthGuard</span>
+      <span class="tab-badge" id="tab1-badge">PROCEED</span>
+    </button>
+    <button class="tab-item" onclick="switchTab('teach')">
+      <span>2. Workflow Registry</span>
+      <span class="tab-badge" id="tab2-badge">12 Steps</span>
+    </button>
+    <button class="tab-item" onclick="switchTab('run')">
+      <span>3. Replay & Self-Healing</span>
+      <span class="tab-badge" id="tab3-badge">Ready</span>
+    </button>
+    <button class="tab-item" onclick="switchTab('results')">
+      <span>4. Empirical Benchmarks</span>
+      <span class="tab-badge" id="tab4-badge">Generality Proof</span>
+    </button>
+  </nav>
+
+  <div class="main-viewport">
+
+    <!-- ============================================================= -->
+    <!-- CAPABILITIES & HOW IT WORKS GUIDE (CLEAN & COLLAPSIBLE) -->
+    <!-- ============================================================= -->
+    <div class="guide-banner" id="capabilities-guide">
+      <div class="guide-banner-header">
+        <div class="guide-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #fb7185;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          System Capabilities: What KINETIC-ZERO Can Do & How It Works
+          <span class="guide-badge">5-Layer Engine</span>
+        </div>
+        <button class="guide-toggle-btn" onclick="toggleGuide()">
+          <span id="guide-toggle-text">Collapse</span>
+        </button>
+      </div>
+
+      <div class="guide-grid" id="guide-grid-cards">
+        <div class="guide-step-card">
+          <span class="guide-step-num">Step 1 • Domain Agnostic</span>
+          <span class="guide-step-name">Modular Domain Packs</span>
+          <span class="guide-step-desc">Swap between Finance (Vendor Claims) and Hospital (Pre-Auth) with zero code change. Schema, SOPs, and portals swap seamlessly.</span>
+        </div>
+
+        <div class="guide-step-card">
+          <span class="guide-step-num">Step 2 • Zero Hallucination</span>
+          <span class="guide-step-name">TruthGuard Safety Gates</span>
+          <span class="guide-step-desc">Pure deterministic Python checks. Every number must appear verbatim in the source document. Overrules AI proposals if policy is breached.</span>
+        </div>
+
+        <div class="guide-step-card">
+          <span class="guide-step-num">Step 3 • Verifiable Citation</span>
+          <span class="guide-step-name">Ask the SOP Policy RAG</span>
+          <span class="guide-step-desc">Pure NumPy hybrid retrieval ($0.6 \text{ meaning} + 0.4 \text{ BM25}$) citing exact SOP clauses. Refuses to guess out-of-domain queries.</span>
+        </div>
+
+        <div class="guide-step-card">
+          <span class="guide-step-num">Step 4 • Resilient Replay</span>
+          <span class="guide-step-name">4-Tier Self-Healing</span>
+          <span class="guide-step-desc">Replays workflows in target portals. If buttons or fields mutate (M1–M6), heals automatically with memory cache and human safety gates.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- TAB 1: VERIFICATION & SAFETY GATE -->
+    <!-- ============================================================= -->
+    <section id="tab-verify" class="tab-pane active">
+      
+      <!-- Agent Router Real-Time Classification Alert -->
+      <div id="router-banner" class="router-detection-banner">
+        <div class="router-lead">
+          <span class="router-badge">AGENT ROUTER</span>
+          <span id="router-text" style="color: var(--text-primary); font-weight: 600;">Matched: Hospital Pre-Authorization (99.0% confidence) • Auto-selected skill: wf_hospital_preauth</span>
+        </div>
+        <button class="btn btn-secondary" style="padding: 2px 8px; font-size: 11px;" onclick="document.getElementById('router-banner').classList.remove('active')">Dismiss</button>
+      </div>
+
+      <!-- Ask the SOP RAG Interactive Drawer -->
+      <div class="rag-panel">
+        <div class="rag-header">
+          <div class="rag-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--brand-primary);"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            Ask the SOP • Ground-Truth Policy RAG (0.6 Meaning + 0.4 BM25-Lite)
+          </div>
+          <span class="chip chip-indigo" id="rag-active-sop-badge">Active SOP: Vendor Payment SOP</span>
+        </div>
+        
+        <div class="rag-input-row">
+          <input type="text" id="rag-query-input" class="rag-input" placeholder="Ask any question about rules, thresholds, or clauses in the active SOP..." onkeydown="if(event.key==='Enter') executeAskSOP()">
+          <button class="btn btn-primary" onclick="executeAskSOP()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            Query SOP
+          </button>
+        </div>
+
+        <div class="rag-chips" id="rag-chips-container">
+          <!-- Populated dynamically per active pack -->
+        </div>
+
+        <!-- Result Card -->
+        <div id="rag-result-card" class="rag-result-card">
+          <div class="rag-result-top">
+            <span class="rag-clause-badge" id="rag-result-clause">Clause [VP-4.2]</span>
+            <span class="rag-score-text" id="rag-result-score">Hybrid Match Score: 0.697 | 100% Grounded</span>
+          </div>
+          <div class="rag-answer-text" id="rag-result-answer"></div>
+          <div class="rag-quote-text" id="rag-result-quote"></div>
+        </div>
+      </div>
+
+      <!-- Control Bar -->
+      <!-- Inbound Channels Drawer: WhatsApp & Gmail Webhooks -->
+      <div class="inbound-channels-drawer">
+        <div class="inbound-header">
+          <div class="inbound-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--status-emerald);"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            Automated Inbound Channels • WhatsApp Business & Accounts Payable Gmail
+          </div>
+          <span class="chip chip-emerald">2 Inbound Streams Active</span>
+        </div>
+        <div class="inbound-cards-grid">
+          <div class="inbound-card">
+            <div class="inbound-card-top">
+              <span class="inbound-sender">🟢 WhatsApp Business • Apex Industrial (+91 98201 44821)</span>
+              <span class="inbound-time">10:42 AM</span>
+            </div>
+            <div class="inbound-msg">
+              "Namaste sir, attaching invoice INV-DEMO-01 (Rs 71,610.17) for precision parts delivery. Please process."
+            </div>
+            <button class="btn btn-secondary" onclick="ingestFromWhatsApp()" style="font-size: 11px; padding: 4px 10px; margin-top: 8px;">
+              📥 Ingest & Verify from WhatsApp
+            </button>
+          </div>
+          <div class="inbound-card">
+            <div class="inbound-card-top">
+              <span class="inbound-sender">✉️ Gmail AP • billing@apollo-care.in</span>
+              <span class="inbound-time">11:15 AM</span>
+            </div>
+            <div class="inbound-msg">
+              "Urgent Cashless Pre-Auth Request: Patient Priya Sharma (PT-10492), Policy POL-88219. Form attached."
+            </div>
+            <button class="btn btn-secondary" onclick="ingestFromGmail()" style="font-size: 11px; padding: 4px 10px; margin-top: 8px;">
+              📥 Ingest & Verify from Gmail
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Control Bar -->
+      <div class="control-bar">
+        <div class="control-group">
+          <label class="control-label" id="doc-source-label">Document Source:</label>
+          <select id="invoice-selector" class="form-select" onchange="loadSelectedDocument()" style="min-width: 340px;">
+            <!-- Populated dynamically via /api/documents/{pack_id} -->
+          </select>
+          <input type="file" id="pdf-upload" accept="application/pdf" style="display: none;" onchange="handleFileUpload(event)">
+          <button class="btn btn-secondary" onclick="document.getElementById('pdf-upload').click()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            Upload PDF
+          </button>
+        </div>
+
+        <div class="control-group">
+          <button class="btn btn-warning" onclick="injectHallucinationDemo()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            Inject Hallucination
+          </button>
+          <button class="btn btn-secondary" onclick="downloadTruthCertificate()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Truth Certificate (PDF)
+          </button>
+          <button class="btn btn-primary" onclick="runPreflightSuite()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Run Preflight (F10)
+          </button>
+        </div>
+      </div>
+
+      <!-- Executive Policy Guard Banner -->
+      <div id="guard-banner" class="guard-executive-banner proceed">
+        <div class="guard-status-lead">
+          <div class="guard-caption">TruthGuard Policy Verification Engine (Zero-Browser Safety Gate)</div>
+          <div id="banner-verdict" class="guard-verdict-title proceed">
+            <span>VERDICT: PROCEED</span>
+            <span id="ai-overruled-chip" class="chip chip-rose" style="display:none;">AI Proposal Overruled</span>
+            <span id="msme-badge-chip" class="chip chip-amber" style="display:none;">Sec 43B(h) MSME Clock Active</span>
+          </div>
+          <div id="banner-reason" class="guard-reason-text">All policy checks verified with zero rule violations.</div>
+        </div>
+
+        <div class="guard-metrics-lead">
+          <div class="trust-metric-pill">
+            <div class="trust-metric-val" id="banner-trust-score">100<span style="font-size:14px; color:var(--text-muted); font-weight:400;">/100</span></div>
+            <div class="trust-metric-breakdown">Data Trust Score (S: 35%, A: 35%, P: 30%)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Split Layout: Ground Truth Extraction vs Source PDF Text -->
+      <div class="panel-grid-2">
+        
+        <!-- Left Panel: Ground Truth Extracted Fields -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <span class="panel-card-title">Extracted Document Fields & Evidence</span>
+            <span class="chip chip-neutral" id="doc-id-label">DOC: demo_clean</span>
+          </div>
+          <div class="panel-card-body" style="padding: 0;">
+            <table class="enterprise-table" id="fields-table">
+              <thead>
+                <tr>
+                  <th style="width: 140px;">Field Name</th>
+                  <th style="width: 160px;">Extracted Value</th>
+                  <th>Source Grounding Evidence</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right Panel: Raw Document Text Layer -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <span class="panel-card-title">Source Document Text Layer (pypdf)</span>
+            <span style="font-size: 11px; color: var(--text-muted);">Click any field on the left to highlight match</span>
+          </div>
+          <div class="panel-card-body">
+            <div id="source-text-view" class="source-text-container">
+              <!-- Raw text with dynamic highlights -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Verified Policy Gates Table -->
+      <div class="panel-card" style="margin-top: 18px;">
+        <div class="panel-card-header">
+          <span class="panel-card-title">Deterministic Safety Gates & Policy Clause Grounding</span>
+          <span class="chip chip-neutral" id="guard-rules-count">Evaluated Gates</span>
+        </div>
+        <div class="panel-card-body" style="padding: 0;">
+          <table class="enterprise-table" id="gates-table">
+            <thead>
+              <tr>
+                <th style="width: 70px;">Gate</th>
+                <th style="width: 90px;">Status</th>
+                <th style="width: 90px;">Cited Clause</th>
+                <th>Safety Specification & Statement</th>
+                <th>Grounding Evidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 2: TEACH & WORKFLOW REGISTRY -->
+    <!-- ============================================================= -->
+    <section id="tab-teach" class="tab-pane">
+      <div class="panel-card">
+        <div class="panel-card-header">
+          <div>
+            <span class="panel-card-title" id="workflow-title">Workflow: Vendor Claim Entry</span>
+            <span style="font-size: 12px; color: var(--text-muted); margin-top: 4px; display: block;" id="workflow-desc">
+              Taught portal sequence with variable binding and fragility forecast.
+            </span>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button class="btn btn-secondary" onclick="openRecorderModal()" style="font-size: 11.5px; padding: 4px 10px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+              Record New Task
+            </button>
+            <span class="chip chip-indigo" id="workflow-steps-badge">12 Steps</span>
+          </div>
+        </div>
+        <div class="panel-card-body" style="padding: 0;">
+          <table class="enterprise-table" id="workflow-steps-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">Step</th>
+                <th style="width: 70px;">Action</th>
+                <th style="width: 200px;">User Intent</th>
+                <th style="width: 140px;">Bound Variable</th>
+                <th>Primary Browser Locator</th>
+                <th style="width: 90px;">Fragility</th>
+                <th style="width: 90px;">Irreversible</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 3: RUN & SELF-HEALING REPLAY -->
+    <!-- ============================================================= -->
+    <section id="tab-run" class="tab-pane">
+      
+      <!-- Replay Control Bar -->
+      <div class="control-bar">
+        <div class="control-group">
+          <label class="control-label">Replay Method:</label>
+          <select id="run-mode-select" class="form-select">
+            <option value="k0_full">KINETIC-ZERO Multi-Tier Healing (Tiers 0, 3, 1, 2)</option>
+            <option value="k0_tier1">KINETIC-ZERO Pure Tier 1 (7-Feature Scorer)</option>
+            <option value="baseline">Naive Replay Baseline (Exact Match)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Chaos Mutation:</label>
+          <select id="run-mutation-select" class="form-select">
+            <option value="none">Normal (No DOM mutation)</option>
+            <option value="M1">M1: Rename IDs & Selectors</option>
+            <option value="M2">M2: Relabel / Text Replacement</option>
+            <option value="M3">M3: Reorder Form Fields</option>
+            <option value="M4">M4: Retag Element Type</option>
+            <option value="M5">M5: Adversarial Decoy Button</option>
+            <option value="M6">M6: Extreme Combo Mutation (Judge Button)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <button class="btn btn-secondary" onclick="openHealerDiffModal()" style="font-size: 12px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            Inspect Healer (DOM Diff)
+          </button>
+          <button class="btn btn-secondary" onclick="downloadRunCertificate()" style="font-size: 12px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Audit Certificate (PDF)
+          </button>
+          <button class="btn btn-primary" id="btn-start-run" onclick="startWorkflowExecution()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Execute Replay
+          </button>
+        </div>
+      </div>
+
+      <!-- Execution Status Card -->
+      <div id="run-status-card" class="guard-executive-banner proceed" style="display: none; margin-bottom: 20px;">
+        <div class="guard-status-lead">
+          <div class="guard-caption">Run Execution Result</div>
+          <div id="run-outcome-title" class="guard-verdict-title proceed">OUTCOME: SUCCESS</div>
+          <div id="run-outcome-detail" class="guard-reason-text">All workflow steps executed and verified.</div>
+        </div>
+        <div class="guard-metrics-lead">
+          <div class="trust-metric-pill">
+            <div class="trust-metric-val" id="run-latency-val">18ms</div>
+            <div class="trust-metric-breakdown" id="run-llm-calls-val">0 LLM Calls</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Split Layout: Embedded Live Portal vs Real-Time Healing Stream -->
+      <div class="portal-viewport-grid">
+        
+        <!-- Live Target Portal Frame -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <span class="panel-card-title">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              Live Target Portal Runtime
+            </span>
+            <button class="btn btn-secondary" onclick="refreshPortalFrame()" style="padding: 2px 8px; font-size: 11px;">
+              Refresh Portal
+            </button>
+          </div>
+          <div class="panel-card-body" style="padding: 0; min-height: 480px;">
+            <iframe id="portal-frame" src="/portal/claim" class="portal-iframe"></iframe>
+          </div>
+        </div>
+
+        <!-- Real-Time Telemetry & Healed Steps Stream -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <span class="panel-card-title">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              Live Healer Telemetry (SSE Stream)
+            </span>
+            <button class="btn btn-secondary" onclick="clearLiveLog()" style="padding: 2px 8px; font-size: 11px;">
+              Clear Stream
+            </button>
+          </div>
+          <div class="panel-card-body" style="padding: 0; display: flex; flex-direction: column; min-height: 480px;">
+            <div id="live-event-stream" class="telemetry-stream-body">
+              <!-- Streaming events logged here -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 4: BENCHMARK RESULTS -->
+    <!-- ============================================================= -->
+    <section id="tab-results" class="tab-pane">
+      
+      <!-- Generality Proof Comparison Header -->
+      <div class="panel-card" style="margin-bottom: 20px; border-left: 4px solid var(--brand-primary);">
+        <div class="panel-card-header">
+          <span class="panel-card-title">Domain Generality Proof • Cross-Domain Empirical Evaluation</span>
+          <span class="chip chip-emerald">2 Operating Domain Packs</span>
+        </div>
+        <div class="panel-card-body" style="padding: 0;">
+          <table class="enterprise-table" id="generality-table">
+            <thead>
+              <tr>
+                <th>Domain Pack</th>
+                <th>Target Portal</th>
+                <th>Taught Workflow</th>
+                <th>Sample Size</th>
+                <th>Fault Recall</th>
+                <th>False-Block Rate</th>
+                <th>Heal Success Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: 700; color: var(--text-primary);">⚡ Finance / Accounts Payable</td>
+                <td>Portal A (/portal/claim)</td>
+                <td>wf_vendor_claim (12 steps)</td>
+                <td>N = 64 Invoices</td>
+                <td style="color: var(--status-emerald); font-weight: 700;">100.0%</td>
+                <td style="color: var(--status-emerald); font-weight: 700;">0.0%</td>
+                <td style="color: var(--status-emerald); font-weight: 700;">100.0%</td>
+              </tr>
+              <tr>
+                <td style="font-weight: 700; color: var(--text-primary);">🏥 Hospital / Pre-Authorization</td>
+                <td>Portal B (/portal_b/preauth)</td>
+                <td>wf_hospital_preauth (10 steps)</td>
+                <td>N = 20 Patient Cases</td>
+                <td style="color: var(--status-emerald); font-weight: 700;">100.0%</td>
+                <td style="color: var(--status-emerald); font-weight: 700;">0.0%</td>
+                <td style="color: var(--status-emerald); font-weight: 700;">100.0%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Metric Cards Grid -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-card-label">Evaluated Fixtures</div>
+          <div class="metric-card-num" id="bench-total-invoices">84</div>
+          <div class="metric-card-sub">64 Invoices + 20 Hospital Cases</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-card-label">False-Block Rate (Clean)</div>
+          <div class="metric-card-num" style="color: var(--status-emerald);" id="bench-false-block">0.0%</div>
+          <div class="metric-card-sub">0 legitimate transactions blocked</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-card-label">Hallucination Catch Rate</div>
+          <div class="metric-card-num" style="color: var(--status-emerald);" id="bench-hallucination">100.0%</div>
+          <div class="metric-card-sub">30 / 30 ungrounded corruptions caught (G9)</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-card-label">Citation Catch Rate</div>
+          <div class="metric-card-num" style="color: var(--status-emerald);" id="bench-citation">100.0%</div>
+          <div class="metric-card-sub">20 / 20 fabricated clauses caught (G8)</div>
+        </div>
+      </div>
+
+      <!-- Benchmark Tables Grid -->
+      <div class="panel-grid-2">
+        
+        <!-- Table 1: RAG Knowledge Layer Benchmark -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <span class="panel-card-title">RAG Knowledge Layer Benchmark (Hybrid vs Lexical)</span>
+            <span class="chip chip-indigo">100.0% Top-1 Accuracy</span>
+          </div>
+          <div class="panel-card-body" style="padding: 0;">
+            <table class="enterprise-table">
+              <thead>
+                <tr>
+                  <th>SOP Document</th>
+                  <th>Clauses</th>
+                  <th>Top-1 Hit Rate</th>
+                  <th>Recall@3</th>
+                  <th>Hybrid Gain</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight: 600;">Vendor Payment SOP</td>
+                  <td>14</td>
+                  <td style="color: var(--status-emerald); font-weight: 700;">100.0%</td>
+                  <td style="color: var(--status-emerald); font-weight: 700;">100.0%</td>
+                  <td style="color: #ffe4e6; font-weight: 700;">+18.4% vs BM25</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: 600;">Insurance Pre-Auth SOP</td>
+                  <td>8</td>
+                  <td style="color: var(--status-emerald); font-weight: 700;">100.0%</td>
+                  <td style="color: var(--status-emerald); font-weight: 700;">100.0%</td>
+                  <td style="color: #ffe4e6; font-weight: 700;">+22.1% vs BM25</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Table 2: Self-Healing Performance -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <span class="panel-card-title">Self-Healing Performance Under Chaos Mutations (M1–M6)</span>
+            <button class="btn btn-secondary" onclick="reRunBenchmarkSuite()" style="padding: 3px 8px; font-size: 11px;">
+              Re-run Benchmark Suite
+            </button>
+          </div>
+          <div class="panel-card-body" style="padding: 0;">
+            <table class="enterprise-table" id="bench-heal-table">
+              <thead>
+                <tr>
+                  <th>Replay Method</th>
+                  <th>Success %</th>
+                  <th>Crash %</th>
+                  <th>Wrong Action %</th>
+                  <th>Mean Latency</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+
+            <div style="padding: 16px 18px; border-top: 1px solid var(--border-subtle); background-color: rgba(255, 255, 255, 0.01);">
+              <div style="font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">
+                Episodic Memory Cache Experiment (Tier 3)
+              </div>
+              <table class="enterprise-table">
+                <thead>
+                  <tr>
+                    <th>Condition</th>
+                    <th>Cold Run (1st)</th>
+                    <th>Warm Run (2nd)</th>
+                    <th>Cache Hit Ratio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="font-weight: 600;">Extreme Mutation M6</td>
+                    <td id="mem-cold-calls">0 calls (Tier 1)</td>
+                    <td id="mem-warm-calls">0 calls (Tier 3)</td>
+                    <td style="color: var(--status-emerald); font-weight: 700;">100.0%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- Human Safety Gate Modal -->
+  <div id="confirm-modal" class="modal-backdrop">
+    <div class="modal-dialog" style="border-top: 4px solid var(--status-amber);">
+      <div class="modal-dialog-header">
+        <h3 class="modal-dialog-title" style="color: var(--status-amber);">Operator Approval Required — Irreversible Transaction</h3>
+      </div>
+      <p style="margin-bottom: 14px; font-size: 13px; color: var(--text-secondary);">
+        An irreversible state modification is pending in the target web portal:
+      </p>
+      <div style="background-color: var(--bg-canvas); border: 1px solid var(--border-subtle); padding: 14px; border-radius: var(--radius-md); margin-bottom: 16px;">
+        <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 4px;" id="confirm-intent-label">Submit Action</div>
+        <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);" id="confirm-details-label">Route: Target Portal</div>
+      </div>
+      <div class="modal-dialog-footer">
+        <button class="btn btn-danger" onclick="resolveHumanConfirm(false)">Reject & Cancel</button>
+        <button class="btn btn-primary" onclick="resolveHumanConfirm(true)">Authorize & Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preflight Counterfactual Modal -->
+  <div id="preflight-modal" class="modal-backdrop">
+    <div class="modal-dialog" style="max-width: 720px; border-top: 4px solid var(--brand-primary);">
+      <div class="modal-dialog-header">
+        <h3 class="modal-dialog-title">Preflight Counterfactual Analysis (F10)</h3>
+        <button class="btn btn-secondary" onclick="closeModal('preflight-modal')" style="padding: 3px 10px; font-size: 11px;">Close</button>
+      </div>
+      <div id="preflight-modal-body" style="padding-top: 10px;">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/console/console.js?v=4.0"></script>
+  <script>
+    function toggleGuide() {
+      const grid = document.getElementById("guide-grid-cards");
+      const btnText = document.getElementById("guide-toggle-text");
+      if (grid.style.display === "none") {
+        grid.style.display = "grid";
+        btnText.textContent = "Collapse";
+      } else {
+        grid.style.display = "none";
+        btnText.textContent = "Expand Details";
+      }
+    }
+  </script>
+
+  <!-- Visual DOM Healer Inspector Modal -->
+  <div id="healer-diff-modal" class="modal-backdrop">
+    <div class="modal-dialog" style="max-width: 760px; border-top: 4px solid #e11d48;">
+      <div class="modal-dialog-header">
+        <h3 class="modal-dialog-title">⚡ 4-Tier Self-Healing Inspector (DOM Attribute Diff)</h3>
+        <button class="btn btn-secondary" onclick="closeModal('healer-diff-modal')" style="padding: 3px 10px; font-size: 11px;">Close</button>
+      </div>
+      <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 14px;">
+        Evaluated under <strong>Chaos Mutation M6 (Extreme Combo)</strong> on Target Portal:
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+        <!-- Left: Broken -->
+        <div style="background-color: rgba(244, 63, 94, 0.06); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: var(--radius-md); padding: 12px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--status-rose); text-transform: uppercase; margin-bottom: 6px;">
+            Broken Selector (Tier 0 Exact Match)
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-primary); margin-bottom: 8px;">
+            #vendor_gstin
+          </div>
+          <div style="font-size: 11px; color: var(--status-rose);">
+            ❌ 404: Element Not Found (DOM Mutation Broken)
+          </div>
+        </div>
+        <!-- Right: Healed -->
+        <div style="background-color: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-md); padding: 12px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--status-emerald); text-transform: uppercase; margin-bottom: 6px;">
+            Healed Replacement (Tier 1 Scorer)
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--status-blue); margin-bottom: 8px;">
+            input[data-k0-field="vendor_gstin"]
+          </div>
+          <div style="font-size: 11px; color: var(--status-emerald); font-weight: 600;">
+            ✓ Semantic Confidence Score: 0.94 / 1.00 (+0.62 Margin)
+          </div>
+        </div>
+      </div>
+      <div style="background-color: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 12px; margin-bottom: 14px;">
+        <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">
+          7-Feature Semantic Scoring Vector Breakdown
+        </div>
+        <table class="enterprise-table" style="font-size: 11px;">
+          <thead>
+            <tr><th>Attribute</th><th>Observed Candidate</th><th>Weight</th><th>Match Score</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Tag Name</td><td><code>&lt;input&gt;</code></td><td>20%</td><td style="color:var(--status-emerald);">1.00</td></tr>
+            <tr><td>Semantic Label</td><td>"Vendor GSTIN"</td><td>30%</td><td style="color:var(--status-emerald);">0.95</td></tr>
+            <tr><td>Nearby Text</td><td>"Legal Company Name"</td><td>20%</td><td style="color:var(--status-emerald);">0.88</td></tr>
+            <tr><td>Grid Bounding Box</td><td>Column 1, Row 1</td><td>15%</td><td style="color:var(--status-emerald);">0.92</td></tr>
+            <tr><td>Action Target</td><td>Form Input Binding</td><td>15%</td><td style="color:var(--status-emerald);">0.95</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">
+        💾 Cached to SQLite Episodic Memory: <code>data/k0.db</code> (0 ms & 0 LLM calls on rerun)
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Task Recorder Modal -->
+  <div id="recorder-modal" class="modal-backdrop">
+    <div class="modal-dialog" style="max-width: 640px; border-top: 4px solid var(--brand-primary);">
+      <div class="modal-dialog-header">
+        <h3 class="modal-dialog-title">🎙️ Show-and-Tell Task Recorder (Zero-Code Workflow Capture)</h3>
+        <button class="btn btn-secondary" onclick="closeModal('recorder-modal')" style="padding: 3px 10px; font-size: 11px;">Close</button>
+      </div>
+      <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 14px;">
+        Teach KINETIC-ZERO a new portal task by demonstrating it once. The listener captures user clicks, inputs, and element fingerprints.
+      </p>
+      <div style="margin-bottom: 14px;">
+        <label class="control-label" style="display:block; margin-bottom: 4px;">Task Name:</label>
+        <input type="text" id="record-task-name" class="rag-input" value="wf_custom_vendor_settlement" style="width: 100%;">
+      </div>
+      <div id="recorder-stream-box" style="background-color: var(--bg-canvas); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 12px; max-height: 180px; overflow-y: auto; font-family: var(--font-mono); font-size: 11px; margin-bottom: 16px;">
+        <div style="color: var(--text-muted);">[Ready] Click 'Start Recording' to begin capturing DOM interactions on the target portal...</div>
+      </div>
+      <div class="modal-dialog-footer" style="justify-content: space-between;">
+        <button class="btn btn-danger" id="btn-start-record" onclick="simulateStartRecording()">
+          <span class="pulse-dot" style="margin-right: 4px;"></span> Start Recording
+        </button>
+        <button class="btn btn-primary" id="btn-save-record" onclick="simulateSaveRecording()" disabled>
+          Generate & Save Skill JSON
+        </button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

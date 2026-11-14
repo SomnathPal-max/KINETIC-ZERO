@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Meridian Vendor Claim Portal - Claim Entry</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background: #f8fafc; color: #1e293b; padding: 2rem 1rem; }
+    .container { max-width: 800px; margin: 0 auto; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 2rem; }
+    header { border-bottom: 2px solid #e2e8f0; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+    header h1 { font-size: 1.5rem; color: #0f172a; }
+    header p { font-size: 0.875rem; color: #64748b; margin-top: 0.25rem; }
+    .badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: #e0f2fe; color: #0369a1; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group.full { grid-column: span 2; }
+    label { display: block; font-size: 0.875rem; font-weight: 600; color: #334155; margin-bottom: 0.35rem; }
+    input, textarea { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.95rem; color: #0f172a; }
+    input:focus, textarea:focus { outline: none; border-color: #2563eb; ring: 2px solid #93c5fd; }
+    .actions { display: flex; gap: 1rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+    .btn { padding: 0.65rem 1.5rem; font-size: 0.95rem; font-weight: 600; border-radius: 6px; cursor: pointer; border: none; text-align: center; text-decoration: none; }
+    .btn-primary { background: #2563eb; color: #ffffff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-secondary { background: #e2e8f0; color: #475569; }
+    .btn-secondary:hover { background: #cbd5e1; }
+    
+    /* Judge Mutation Floating Widget */
+    #judge-chaos-panel { position: fixed; top: 1rem; right: 1rem; background: #1e1e24; color: #fff; padding: 0.75rem 1rem; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); font-size: 0.8rem; z-index: 9999; }
+    #judge-chaos-panel select, #judge-chaos-panel button { font-size: 0.8rem; padding: 0.3rem 0.5rem; border-radius: 4px; margin-top: 0.4rem; }
+    #judge-chaos-panel button { background: #ef4444; color: #fff; border: none; cursor: pointer; font-weight: bold; }
+    footer { margin-top: 2rem; text-align: center; font-size: 0.75rem; color: #94a3b8; }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Judge Chaos Mutator Control -->
+  <div id="judge-chaos-panel">
+    <div><strong>⚡ Chaos Mutator</strong></div>
+    <div>Current: <span id="current-mutation-badge">{{ mutation.type }}</span></div>
+    <select id="judge-mutation-select">
+      <option value="none">Normal (No mutation)</option>
+      <option value="M1">M1: rename_ids</option>
+      <option value="M2">M2: relabel</option>
+      <option value="M3">M3: reorder</option>
+      <option value="M4">M4: retag</option>
+      <option value="M5">M5: decoy</option>
+      <option value="M6">M6: combo (Judge Button)</option>
+    </select>
+    <button id="judge-apply-mutate">Mutate</button>
+  </div>
+
+  <div class="container">
+    <header>
+      <span class="badge">Vendor Claim Form</span>
+      <h1>Meridian Vendor Claim Portal</h1>
+      <p>Submit verified vendor invoices for accounts payable settlement.</p>
+    </header>
+
+    <form id="claim_form" action="/portal/claim" method="POST" data-k0-form="claim">
+      <div class="grid">
+        <div class="form-group">
+          <label for="vendor_gstin">Vendor GSTIN</label>
+          <input type="text" id="vendor_gstin" name="vendor_gstin" class="form-control"
+                 placeholder="e.g. 27AAPFU0939F1ZV" value="{{ fields.vendor_gstin or '' }}" required
+                 data-k0-field="vendor_gstin">
+        </div>
+
+        <div class="form-group">
+          <label for="vendor_name">Vendor Name</label>
+          <input type="text" id="vendor_name" name="vendor_name" class="form-control"
+                 placeholder="Legal Company Name" value="{{ fields.vendor_name or '' }}" required
+                 data-k0-field="vendor_name">
+        </div>
+
+        <div class="form-group">
+          <label for="invoice_no">Invoice No.</label>
+          <input type="text" id="invoice_no" name="invoice_no" class="form-control"
+                 placeholder="INV-XXXX" value="{{ fields.invoice_no or '' }}" required
+                 data-k0-field="invoice_no">
+        </div>
+
+        <div class="form-group">
+          <label for="invoice_date">Invoice Date</label>
+          <input type="date" id="invoice_date" name="invoice_date" class="form-control"
+                 value="{{ fields.invoice_date or '' }}" required
+                 data-k0-field="invoice_date">
+        </div>
+
+        <div class="form-group">
+          <label for="po_number">PO Number</label>
+          <input type="text" id="po_number" name="po_number" class="form-control"
+                 placeholder="PO-XXXX" value="{{ fields.po_number or '' }}"
+                 data-k0-field="po_number">
+        </div>
+
+        <div class="form-group">
+          <label for="taxable_value">Taxable Value</label>
+          <input type="number" step="0.01" id="taxable_value" name="taxable_value" class="form-control"
+                 placeholder="0.00" value="{{ fields.taxable_value or '' }}" required
+                 data-k0-field="taxable_value">
+        </div>
+
+        <div class="form-group">
+          <label for="cgst">CGST</label>
+          <input type="number" step="0.01" id="cgst" name="cgst" class="form-control"
+                 placeholder="0.00" value="{{ fields.cgst or '0.00' }}"
+                 data-k0-field="cgst">
+        </div>
+
+        <div class="form-group">
+          <label for="sgst">SGST</label>
+          <input type="number" step="0.01" id="sgst" name="sgst" class="form-control"
+                 placeholder="0.00" value="{{ fields.sgst or '0.00' }}"
+                 data-k0-field="sgst">
+        </div>
+
+        <div class="form-group">
+          <label for="igst">IGST</label>
+          <input type="number" step="0.01" id="igst" name="igst" class="form-control"
+                 placeholder="0.00" value="{{ fields.igst or '0.00' }}"
+                 data-k0-field="igst">
+        </div>
+
+        <div class="form-group">
+          <label for="total">Total</label>
+          <input type="number" step="0.01" id="total" name="total" class="form-control"
+                 placeholder="0.00" value="{{ fields.total or '' }}" required
+                 data-k0-field="total">
+        </div>
+
+        <div class="form-group full">
+          <label for="remarks">Remarks (Optional)</label>
+          <textarea id="remarks" name="remarks" rows="2" class="form-control"
+                    data-k0-field="remarks">{{ fields.remarks or '' }}</textarea>
+        </div>
+      </div>
+
+      <div class="actions" id="form-actions-container">
+        <button type="submit" id="btn_review" name="review_btn" class="btn btn-primary" data-k0-action="review">Review Claim</button>
+        <button type="reset" id="btn_clear" name="clear_btn" class="btn btn-secondary" data-k0-action="clear">Clear</button>
+      </div>
+    </form>
+
+    <footer>
+      Notice: Meridian Vendor Claim Portal uses a synthetic mock GSTN registry for demonstration purposes.
+    </footer>
+  </div>
+
+  <script src="/portal/static/mutations.js"></script>
+</body>
+</html>

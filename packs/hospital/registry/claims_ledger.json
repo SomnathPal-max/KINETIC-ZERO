@@ -1,0 +1,9 @@
+{
+  "PT-9901": {
+    "patient_id": "PT-9901",
+    "policy_number": "POL-11029",
+    "admission_date": "2026-11-20",
+    "claim_id": "PRE-2026-001",
+    "status": "PROCESSED"
+  }
+}

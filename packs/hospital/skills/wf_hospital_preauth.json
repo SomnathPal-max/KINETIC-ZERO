@@ -1,0 +1,378 @@
+{
+  "workflow_id": "wf_hospital_preauth",
+  "name": "Patient Cashless Insurance Pre-Authorization",
+  "version": 1,
+  "start_url": "/portal_b/preauth",
+  "steps": [
+    {
+      "id": "s1",
+      "action": "fill",
+      "intent": "Enter Patient Identification Number",
+      "value_from": "patient_id",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": [
+        "cancel",
+        "clear",
+        "reset"
+      ],
+      "locator": {
+        "strategy": "id",
+        "value": "patient_id"
+      },
+      "alt_locators": [
+        {
+          "strategy": "name",
+          "value": "patient_id"
+        },
+        {
+          "strategy": "css",
+          "value": "input[name='patient_id']"
+        }
+      ],
+      "fingerprint": {
+        "tag": "input",
+        "id": "patient_id",
+        "name": "patient_id",
+        "type": "text",
+        "label_text": "Patient ID",
+        "classes": [
+          "form-control"
+        ]
+      }
+    },
+    {
+      "id": "s2",
+      "action": "fill",
+      "intent": "Enter Patient Full Name",
+      "value_from": "patient_name",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": [
+        "cancel",
+        "clear",
+        "reset"
+      ],
+      "locator": {
+        "strategy": "id",
+        "value": "patient_name"
+      },
+      "alt_locators": [
+        {
+          "strategy": "name",
+          "value": "patient_name"
+        },
+        {
+          "strategy": "css",
+          "value": "input[name='patient_name']"
+        }
+      ],
+      "fingerprint": {
+        "tag": "input",
+        "id": "patient_name",
+        "name": "patient_name",
+        "type": "text",
+        "label_text": "Patient Name",
+        "classes": [
+          "form-control"
+        ]
+      }
+    },
+    {
+      "id": "s3",
+      "action": "fill",
+      "intent": "Enter Health Insurance Policy Number",
+      "value_from": "policy_number",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": [
+        "cancel",
+        "clear",
+        "reset"
+      ],
+      "locator": {
+        "strategy": "id",
+        "value": "policy_number"
+      },
+      "alt_locators": [
+        {
+          "strategy": "name",
+          "value": "policy_number"
+        },
+        {
+          "strategy": "css",
+          "value": "input[name='policy_number']"
+        }
+      ],
+      "fingerprint": {
+        "tag": "input",
+        "id": "policy_number",
+        "name": "policy_number",
+        "type": "text",
+        "label_text": "Policy Number",
+        "classes": [
+          "form-control"
+        ]
+      }
+    },
+    {
+      "id": "s4",
+      "action": "fill",
+      "intent": "Enter Insurer / TPA ID",
+      "value_from": "insurer_id",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": [
+        "cancel",
+        "clear",
+        "reset"
+      ],
+      "locator": {
+        "strategy": "id",
+        "value": "insurer_id"
+      },
+      "alt_locators": [
+        {
+          "strategy": "name",
+          "value": "insurer_id"
+        },
+        {
+          "strategy": "css",
+          "value": "input[name='insurer_id']"
+        }
+      ],
+      "fingerprint": {
+        "tag": "input",
+        "id": "insurer_id",
+        "name": "insurer_id",
+        "type": "text",
+        "label_text": "Insurer ID",
+        "classes": [
+          "form-control"
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "action": "fill",
+      "intent": "Enter ICD-10 Primary Diagnosis Code",
+      "value_from": "diagnosis_code",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": [
+        "cancel",
+        "clear",
+        "reset"
+      ],
+      "locator": {
+        "strategy": "id",
+        "value": "diagnosis_code"
+      },
+      "alt_locators": [
+        {
+          "strategy": "name",
+          "value": "diagnosis_code"
+        },
+        {
+          "strategy": "css",
+          "value": "input[name='diagnosis_code']"
+        }
+      ],
+      "fingerprint": {
+        "tag": "input",
+        "id": "diagnosis_code",
+        "name": "diagnosis_code",
+        "type": "text",
+        "label_text": "Diagnosis Code",
+        "classes": [
+          "form-control"
+        ]
+      }
+    },
+    {
+      "id": "s6",
+      "action": "fill",
+      "intent": "Enter Surgical / Medical Treatment Type",
+      "value_from": "treatment_type",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": [
+        "cancel",
+        "clear",
+        "reset"
+      ],
+      "locator": {
+        "strategy": "id",
+        "value": "treatment_type"
+      },
+      "alt_locators": [
+        {
+          "strategy": "name",
+          "value": "treatment_type"
+        },
+        {
+          "strategy": "css",
+          "value": "input[name='treatment_type']"
+        }
+      ],
+      "fingerprint": {
+        "tag": "input",
+        "id": "treatment_type",
+        "name": "treatment_type",
+        "type": "text",
+        "label_text": "Treatment Type",
+        "classes": [
+          "form-control"
+        ]
+      }
+    },
+    {
+      "id": "s7",
+      "action": "fill",
+      "intent": "Enter Empanelled Hospital Provider ID",
+      "value_from": "hospital_id",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": [
+        "cancel",
+        "clear",
+        "reset"
+      ],
+      "locator": {
+        "strategy": "id",
+        "value": "hospital_id"
+      },
+      "alt_locators": [
+        {
+          "strategy": "name",
+          "value": "hospital_id"
+        },
+        {
+          "strategy": "css",
+          "value": "input[name='hospital_id']"
+        }
+      ],
+      "fingerprint": {
+        "tag": "input",
+        "id": "hospital_id",
+        "name": "hospital_id",
+        "type": "text",
+        "label_text": "Hospital ID",
+        "classes": [
+          "form-control"
+        ]
+      }
+    },
+    {
+      "id": "s8",
+      "action": "fill",
+      "intent": "Enter Proposed Admission Date",
+      "value_from": "admission_date",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": [
+        "cancel",
+        "clear",
+        "reset"
+      ],
+      "locator": {
+        "strategy": "id",
+        "value": "admission_date"
+      },
+      "alt_locators": [
+        {
+          "strategy": "name",
+          "value": "admission_date"
+        },
+        {
+          "strategy": "css",
+          "value": "input[name='admission_date']"
+        }
+      ],
+      "fingerprint": {
+        "tag": "input",
+        "id": "admission_date",
+        "name": "admission_date",
+        "type": "text",
+        "label_text": "Admission Date",
+        "classes": [
+          "form-control"
+        ]
+      }
+    },
+    {
+      "id": "s9",
+      "action": "fill",
+      "intent": "Enter Estimated Procedure / Hospitalization Cost",
+      "value_from": "estimated_cost",
+      "literal": null,
+      "irreversible": false,
+      "negative_terms": [
+        "cancel",
+        "clear",
+        "reset"
+      ],
+      "locator": {
+        "strategy": "id",
+        "value": "estimated_cost"
+      },
+      "alt_locators": [
+        {
+          "strategy": "name",
+          "value": "estimated_cost"
+        },
+        {
+          "strategy": "css",
+          "value": "input[name='estimated_cost']"
+        }
+      ],
+      "fingerprint": {
+        "tag": "input",
+        "id": "estimated_cost",
+        "name": "estimated_cost",
+        "type": "text",
+        "label_text": "Estimated Cost",
+        "classes": [
+          "form-control"
+        ]
+      }
+    },
+    {
+      "id": "s10",
+      "action": "click",
+      "intent": "Submit Pre-Authorization to Insurer Clearinghouse",
+      "value_from": null,
+      "literal": null,
+      "irreversible": true,
+      "negative_terms": [
+        "cancel",
+        "abort",
+        "discard",
+        "back"
+      ],
+      "locator": {
+        "strategy": "id",
+        "value": "submit-preauth-btn"
+      },
+      "alt_locators": [
+        {
+          "strategy": "role",
+          "value": "button"
+        },
+        {
+          "strategy": "css",
+          "value": "button.btn-primary"
+        }
+      ],
+      "fingerprint": {
+        "tag": "button",
+        "id": "submit-preauth-btn",
+        "text": "Submit Pre-Authorization",
+        "classes": [
+          "btn",
+          "btn-primary"
+        ]
+      }
+    }
+  ]
+}

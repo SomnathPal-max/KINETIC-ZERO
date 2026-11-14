@@ -1,0 +1,114 @@
+[
+  {
+    "id": "preauth_clean",
+    "title": "Clean Pre-Authorization (Compliant \u2014 Anita Sharma)",
+    "fields": {
+      "patient_name": "Anita Sharma",
+      "patient_id": "PT-10492",
+      "policy_number": "POL-88219",
+      "insurer_id": "TPA-STAR-01",
+      "diagnosis_code": "J18",
+      "treatment_type": "Inpatient Antibiotic Therapy & Bronchoscopy",
+      "hospital_id": "HSP-001",
+      "admission_date": "2026-11-25",
+      "estimated_cost": "38500.00"
+    },
+    "fault": "none"
+  },
+  {
+    "id": "preauth_lapsed_policy",
+    "title": "Lapsed Policy Status (Vikram Singh \u2014 Gate HP_G1)",
+    "fields": {
+      "patient_name": "Vikram Singh",
+      "patient_id": "PT-33201",
+      "policy_number": "POL-99402",
+      "insurer_id": "TPA-STAR-01",
+      "diagnosis_code": "K35",
+      "treatment_type": "Laparoscopic Appendectomy",
+      "hospital_id": "HSP-001",
+      "admission_date": "2026-11-26",
+      "estimated_cost": "45000.00"
+    },
+    "fault": "lapsed_policy"
+  },
+  {
+    "id": "preauth_uncovered_code",
+    "title": "Uncovered Cosmetic Code (Z41 Elective \u2014 Gate HP_G2)",
+    "fields": {
+      "patient_name": "Rajesh Kumar",
+      "patient_id": "PT-55102",
+      "policy_number": "POL-44109",
+      "insurer_id": "TPA-STAR-01",
+      "diagnosis_code": "Z41",
+      "treatment_type": "Elective Rhinoplasty Reconstruction",
+      "hospital_id": "HSP-002",
+      "admission_date": "2026-11-28",
+      "estimated_cost": "42000.00"
+    },
+    "fault": "uncovered_code"
+  },
+  {
+    "id": "preauth_manager_review",
+    "title": "Medical Director Escalation (> Rs 50,000 \u2014 Gate HP_G3)",
+    "fields": {
+      "patient_name": "Priya Patel",
+      "patient_id": "PT-77114",
+      "policy_number": "POL-77301",
+      "insurer_id": "TPA-STAR-01",
+      "diagnosis_code": "M16",
+      "treatment_type": "Total Knee Arthroplasty",
+      "hospital_id": "HSP-003",
+      "admission_date": "2026-11-27",
+      "estimated_cost": "85000.00"
+    },
+    "fault": "high_cost_escalation"
+  },
+  {
+    "id": "preauth_overlimit",
+    "title": "Exceeds Policy Ceiling (> Rs 200,000 \u2014 Gate HP_G3)",
+    "fields": {
+      "patient_name": "Anita Sharma",
+      "patient_id": "PT-10492",
+      "policy_number": "POL-88219",
+      "insurer_id": "TPA-STAR-01",
+      "diagnosis_code": "I20",
+      "treatment_type": "Coronary Bypass Graft Surgery",
+      "hospital_id": "HSP-001",
+      "admission_date": "2026-12-01",
+      "estimated_cost": "240000.00"
+    },
+    "fault": "over_ceiling_block"
+  },
+  {
+    "id": "preauth_duplicate",
+    "title": "Duplicate Admission Request (Already Processed \u2014 Gate HP_G5)",
+    "fields": {
+      "patient_name": "Sunita Mehta",
+      "patient_id": "PT-9901",
+      "policy_number": "POL-11029",
+      "insurer_id": "TPA-STAR-01",
+      "diagnosis_code": "E11",
+      "treatment_type": "Diabetic Ketoacidosis Stabilization",
+      "hospital_id": "HSP-001",
+      "admission_date": "2026-11-20",
+      "estimated_cost": "32000.00"
+    },
+    "fault": "duplicate_claim"
+  },
+  {
+    "id": "preauth_nonnetwork",
+    "title": "Non-Empanelled Facility (City Community \u2014 Gate HP_G4)",
+    "fields": {
+      "patient_name": "Anita Sharma",
+      "patient_id": "PT-10492",
+      "policy_number": "POL-88219",
+      "insurer_id": "TPA-STAR-01",
+      "diagnosis_code": "K35",
+      "treatment_type": "Emergency Appendectomy",
+      "hospital_id": "HSP-999",
+      "admission_date": "2026-11-26",
+      "estimated_cost": "41000.00"
+    },
+    "fault": "non_network_hospital"
+  }
+]

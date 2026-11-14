@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pre-Authorization Approved - Portal B</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background: #f0fdf4; color: #1e293b; padding: 2rem 1rem; }
+    .container { max-width: 600px; margin: 3rem auto; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 2.5rem; text-align: center; border-top: 4px solid #059669; }
+    .icon { width: 64px; height: 64px; border-radius: 50%; background: #d1fae5; color: #059669; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 1.5rem auto; }
+    h1 { font-size: 1.5rem; color: #065f46; margin-bottom: 0.5rem; }
+    p { color: #64748b; font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 1rem; text-align: left; font-size: 0.875rem; margin-bottom: 2rem; }
+    .card-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+    .card-row:last-child { margin-bottom: 0; }
+    .card-label { color: #64748b; font-weight: 500; }
+    .card-val { color: #0f172a; font-weight: 600; font-family: monospace; }
+    .btn { display: inline-block; padding: 0.65rem 1.5rem; font-size: 0.95rem; font-weight: 600; border-radius: 6px; cursor: pointer; border: none; text-align: center; text-decoration: none; background: #059669; color: #ffffff; }
+    .btn:hover { background: #047857; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">✓</div>
+    <h1>Cashless Pre-Authorization Approved</h1>
+    <p>The patient admission pre-authorization has been verified and settled.</p>
+
+    <div class="card">
+      <div class="card-row">
+        <span class="card-label">Pre-Auth Reference ID:</span>
+        <span class="card-val" id="preauth-ref">{{ ref_id or 'AUTH-2026-98124' }}</span>
+      </div>
+      <div class="card-row">
+        <span class="card-label">Patient ID:</span>
+        <span class="card-val">{{ patient_id or 'PT-10492' }}</span>
+      </div>
+      <div class="card-row">
+        <span class="card-label">Policy Number:</span>
+        <span class="card-val">{{ policy_number or 'POL-88219' }}</span>
+      </div>
+      <div class="card-row">
+        <span class="card-label">Authorized Amount:</span>
+        <span class="card-val">₹{{ estimated_cost or '38500.00' }}</span>
+      </div>
+      <div class="card-row">
+        <span class="card-label">Status:</span>
+        <span class="card-val" style="color: #059669;">CONFIRMED / CASHLESS ACTIVE</span>
+      </div>
+    </div>
+
+    <a href="/portal_b/preauth" class="btn">New Pre-Authorization</a>
+  </div>
+</body>
+</html>

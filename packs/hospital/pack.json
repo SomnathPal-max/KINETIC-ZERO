@@ -1,0 +1,12 @@
+{
+  "id": "hospital",
+  "name": "Hospital / Healthcare Pre-Auth",
+  "domain": "Hospital Pre-Authorization & TPA Desk",
+  "description": "Patient insurance pre-authorization validation, active policy checks, empanelled hospital checks, and submission to Insurer Pre-Auth Portal B",
+  "doc_type": "preauth_form",
+  "target_portal": "/portal_b/preauth",
+  "default_workflow": "wf_hospital_preauth",
+  "policy_doc": "policy/insurance_preauth_sop.md",
+  "registry": "registry/policies.json",
+  "ledger": "registry/claims_ledger.json"
+}

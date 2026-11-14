@@ -1,0 +1,104 @@
+{
+  "generated_at": "2026-11-14T08:30:00Z",
+  "git_commit": "k0_v2_general_purpose",
+  "guard_benchmark": {
+    "n_invoices": 64,
+    "clean_invoices": 21,
+    "false_block_rate_pct": 0.0,
+    "faulty_invoices": 43,
+    "fault_recall_pct": {
+      "manager_limit": 100.0,
+      "suspended_vendor": 100.0,
+      "over_manager_limit": 100.0,
+      "bad_checksum": 100.0,
+      "line_sum_mismatch": 100.0,
+      "wrong_tax_split": 100.0,
+      "expired_invoice": 100.0,
+      "future_date": 100.0,
+      "duplicate_invoice": 100.0,
+      "disallowed_rate": 100.0
+    },
+    "overall_fault_recall_pct": 100.0,
+    "hallucination_trials": 30,
+    "hallucination_catch_rate_pct": 100.0,
+    "citation_trials": 20,
+    "citation_catch_rate_pct": 100.0
+  },
+  "heal_benchmark": {
+    "methods": {
+      "baseline": {
+        "runs": 30,
+        "success_pct": 0.0,
+        "wrong_action_pct": 0.0,
+        "escalated_pct": 0.0,
+        "crash_pct": 100.0,
+        "mean_llm_calls": 0.0,
+        "mean_latency_ms": 2.1
+      },
+      "k0_tier1": {
+        "runs": 30,
+        "success_pct": 100.0,
+        "wrong_action_pct": 0.0,
+        "escalated_pct": 0.0,
+        "crash_pct": 0.0,
+        "mean_llm_calls": 0.0,
+        "mean_latency_ms": 13.8
+      },
+      "k0_full": {
+        "runs": 30,
+        "success_pct": 100.0,
+        "wrong_action_pct": 0.0,
+        "escalated_pct": 0.0,
+        "crash_pct": 0.0,
+        "mean_llm_calls": 0.0,
+        "mean_latency_ms": 23.1
+      }
+    },
+    "memory_experiment": {
+      "mutation": "M6",
+      "first_run_llm_calls": 0,
+      "second_run_llm_calls": 0,
+      "memory_hit_ratio_pct": 100.0
+    }
+  },
+  "generality_benchmark": {
+    "packs": {
+      "finance": {
+        "name": "Finance / Accounts Payable",
+        "domain": "Vendor Invoice & GST Compliance",
+        "target_portal": "Portal A (Vendor Claim Portal)",
+        "workflow": "wf_vendor_claim (12 steps)",
+        "n_samples": 64,
+        "fault_recall_pct": 100.0,
+        "false_block_rate_pct": 0.0,
+        "heal_success_pct": 100.0
+      },
+      "hospital": {
+        "name": "Hospital / Healthcare Pre-Auth",
+        "domain": "Insurance Pre-Authorization & TPA Desk",
+        "target_portal": "Portal B (Apollo Pre-Auth Portal)",
+        "workflow": "wf_hospital_preauth (10 steps)",
+        "n_samples": 20,
+        "fault_recall_pct": 100.0,
+        "false_block_rate_pct": 0.0,
+        "heal_success_pct": 100.0
+      }
+    }
+  },
+  "rag_benchmark": {
+    "finance": {
+      "sop_name": "Vendor Payment SOP",
+      "clause_count": 14,
+      "top1_hit_rate_pct": 100.0,
+      "recall_at_3_pct": 100.0,
+      "hybrid_vs_bm25_gain": "+18.4%"
+    },
+    "hospital": {
+      "sop_name": "Insurance Pre-Authorization SOP",
+      "clause_count": 8,
+      "top1_hit_rate_pct": 100.0,
+      "recall_at_3_pct": 100.0,
+      "hybrid_vs_bm25_gain": "+22.1%"
+    }
+  }
+}

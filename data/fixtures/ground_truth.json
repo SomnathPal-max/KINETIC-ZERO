@@ -1,0 +1,1602 @@
+[
+  {
+    "doc_id": "demo_clean",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-DEMO-01",
+    "invoice_date": "2026-11-04",
+    "po_number": "PO-9001",
+    "taxable_value": "71610.17",
+    "cgst": "6444.91",
+    "sgst": "6444.92",
+    "igst": "0.00",
+    "total": "84500.00",
+    "line_items": [
+      {
+        "desc": "Precision Components",
+        "qty": "1",
+        "rate": "71610.17",
+        "amount": "71610.17"
+      }
+    ]
+  },
+  {
+    "doc_id": "demo_manager",
+    "fault": "manager_limit",
+    "expected_verdict": "ESCALATE",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-DEMO-02",
+    "invoice_date": "2026-10-30",
+    "po_number": "PO-9002",
+    "taxable_value": "156779.66",
+    "cgst": "14110.17",
+    "sgst": "14110.17",
+    "igst": "0.00",
+    "total": "185000.00",
+    "line_items": [
+      {
+        "desc": "Heavy Machine Assemblies",
+        "qty": "1",
+        "rate": "156779.66",
+        "amount": "156779.66"
+      }
+    ]
+  },
+  {
+    "doc_id": "demo_suspended",
+    "fault": "suspended_vendor",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Western Logistics Corp",
+    "vendor_gstin": "27XYZAB5678C1Z6",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-DEMO-03",
+    "invoice_date": "2026-11-09",
+    "po_number": "PO-9003",
+    "taxable_value": "40000.00",
+    "cgst": "3600.00",
+    "sgst": "3600.00",
+    "igst": "0.00",
+    "total": "47200.00",
+    "line_items": [
+      {
+        "desc": "Freight Delivery",
+        "qty": "1",
+        "rate": "40000.00",
+        "amount": "40000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "demo_overlimit",
+    "fault": "over_manager_limit",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-DEMO-04",
+    "invoice_date": "2026-11-06",
+    "po_number": "PO-9004",
+    "taxable_value": "271186.44",
+    "cgst": "24406.78",
+    "sgst": "24406.78",
+    "igst": "0.00",
+    "total": "320000.00",
+    "line_items": [
+      {
+        "desc": "Factory Generator Unit",
+        "qty": "1",
+        "rate": "271186.44",
+        "amount": "271186.44"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_01",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-001",
+    "invoice_date": "2026-11-12",
+    "po_number": "PO-CLN-001",
+    "taxable_value": "6779.66",
+    "cgst": "610.17",
+    "sgst": "610.17",
+    "igst": "0.00",
+    "total": "8000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "6779.66",
+        "amount": "6779.66"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_02",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Silicon Silicones Bengaluru",
+    "vendor_gstin": "29PQRST3456E1ZN",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-002",
+    "invoice_date": "2026-11-09",
+    "po_number": "PO-CLN-002",
+    "taxable_value": "10169.49",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "1830.51",
+    "total": "12000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "10169.49",
+        "amount": "10169.49"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_03",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-003",
+    "invoice_date": "2026-11-06",
+    "po_number": "PO-CLN-003",
+    "taxable_value": "15677.97",
+    "cgst": "1411.02",
+    "sgst": "1411.01",
+    "igst": "0.00",
+    "total": "18500.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "15677.97",
+        "amount": "15677.97"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_04",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Silicon Silicones Bengaluru",
+    "vendor_gstin": "29PQRST3456E1ZN",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-004",
+    "invoice_date": "2026-11-03",
+    "po_number": "PO-CLN-004",
+    "taxable_value": "20338.98",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "3661.02",
+    "total": "24000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "20338.98",
+        "amount": "20338.98"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_05",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-005",
+    "invoice_date": "2026-10-31",
+    "po_number": "PO-CLN-005",
+    "taxable_value": "29661.02",
+    "cgst": "2669.49",
+    "sgst": "2669.49",
+    "igst": "0.00",
+    "total": "35000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "29661.02",
+        "amount": "29661.02"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_06",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Silicon Silicones Bengaluru",
+    "vendor_gstin": "29PQRST3456E1ZN",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-006",
+    "invoice_date": "2026-10-28",
+    "po_number": "PO-CLN-006",
+    "taxable_value": "40677.97",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "7322.03",
+    "total": "48000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "40677.97",
+        "amount": "40677.97"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_07",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-007",
+    "invoice_date": "2026-10-25",
+    "po_number": "PO-CLN-007",
+    "taxable_value": "44067.80",
+    "cgst": "3966.10",
+    "sgst": "3966.10",
+    "igst": "0.00",
+    "total": "52000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "44067.80",
+        "amount": "44067.80"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_08",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Silicon Silicones Bengaluru",
+    "vendor_gstin": "29PQRST3456E1ZN",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-008",
+    "invoice_date": "2026-10-22",
+    "po_number": "PO-CLN-008",
+    "taxable_value": "55084.75",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "9915.25",
+    "total": "65000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "55084.75",
+        "amount": "55084.75"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_09",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-009",
+    "invoice_date": "2026-10-19",
+    "po_number": "PO-CLN-009",
+    "taxable_value": "61016.95",
+    "cgst": "5491.52",
+    "sgst": "5491.53",
+    "igst": "0.00",
+    "total": "72000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "61016.95",
+        "amount": "61016.95"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_10",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Silicon Silicones Bengaluru",
+    "vendor_gstin": "29PQRST3456E1ZN",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-010",
+    "invoice_date": "2026-10-16",
+    "po_number": "PO-CLN-010",
+    "taxable_value": "71186.44",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "12813.56",
+    "total": "84000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "71186.44",
+        "amount": "71186.44"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_11",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-011",
+    "invoice_date": "2026-10-13",
+    "po_number": "PO-CLN-011",
+    "taxable_value": "77966.10",
+    "cgst": "7016.95",
+    "sgst": "7016.95",
+    "igst": "0.00",
+    "total": "92000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "77966.10",
+        "amount": "77966.10"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_12",
+    "fault": null,
+    "expected_verdict": "PROCEED",
+    "vendor_name": "Silicon Silicones Bengaluru",
+    "vendor_gstin": "29PQRST3456E1ZN",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-012",
+    "invoice_date": "2026-10-10",
+    "po_number": "PO-CLN-012",
+    "taxable_value": "83050.85",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "14949.15",
+    "total": "98000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "83050.85",
+        "amount": "83050.85"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_13",
+    "fault": null,
+    "expected_verdict": "ESCALATE",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-013",
+    "invoice_date": "2026-10-07",
+    "po_number": "PO-CLN-013",
+    "taxable_value": "93220.34",
+    "cgst": "8389.83",
+    "sgst": "8389.83",
+    "igst": "0.00",
+    "total": "110000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "93220.34",
+        "amount": "93220.34"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_14",
+    "fault": null,
+    "expected_verdict": "ESCALATE",
+    "vendor_name": "Silicon Silicones Bengaluru",
+    "vendor_gstin": "29PQRST3456E1ZN",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-014",
+    "invoice_date": "2026-10-04",
+    "po_number": "PO-CLN-014",
+    "taxable_value": "105932.20",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "19067.80",
+    "total": "125000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "105932.20",
+        "amount": "105932.20"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_15",
+    "fault": null,
+    "expected_verdict": "ESCALATE",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-015",
+    "invoice_date": "2026-10-01",
+    "po_number": "PO-CLN-015",
+    "taxable_value": "118644.07",
+    "cgst": "10677.96",
+    "sgst": "10677.97",
+    "igst": "0.00",
+    "total": "140000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "118644.07",
+        "amount": "118644.07"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_16",
+    "fault": null,
+    "expected_verdict": "ESCALATE",
+    "vendor_name": "Silicon Silicones Bengaluru",
+    "vendor_gstin": "29PQRST3456E1ZN",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-016",
+    "invoice_date": "2026-09-28",
+    "po_number": "PO-CLN-016",
+    "taxable_value": "135593.22",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "24406.78",
+    "total": "160000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "135593.22",
+        "amount": "135593.22"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_17",
+    "fault": null,
+    "expected_verdict": "ESCALATE",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-017",
+    "invoice_date": "2026-09-25",
+    "po_number": "PO-CLN-017",
+    "taxable_value": "148305.08",
+    "cgst": "13347.46",
+    "sgst": "13347.46",
+    "igst": "0.00",
+    "total": "175000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "148305.08",
+        "amount": "148305.08"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_18",
+    "fault": null,
+    "expected_verdict": "ESCALATE",
+    "vendor_name": "Silicon Silicones Bengaluru",
+    "vendor_gstin": "29PQRST3456E1ZN",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-018",
+    "invoice_date": "2026-09-22",
+    "po_number": "PO-CLN-018",
+    "taxable_value": "165254.24",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "29745.76",
+    "total": "195000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "165254.24",
+        "amount": "165254.24"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_19",
+    "fault": null,
+    "expected_verdict": "ESCALATE",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-019",
+    "invoice_date": "2026-09-19",
+    "po_number": "PO-CLN-019",
+    "taxable_value": "177966.10",
+    "cgst": "16016.95",
+    "sgst": "16016.95",
+    "igst": "0.00",
+    "total": "210000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "177966.10",
+        "amount": "177966.10"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_clean_20",
+    "fault": null,
+    "expected_verdict": "ESCALATE",
+    "vendor_name": "Silicon Silicones Bengaluru",
+    "vendor_gstin": "29PQRST3456E1ZN",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-CLN-020",
+    "invoice_date": "2026-09-16",
+    "po_number": "PO-CLN-020",
+    "taxable_value": "203389.83",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "36610.17",
+    "total": "240000.00",
+    "line_items": [
+      {
+        "desc": "Standard Supplies",
+        "qty": "1",
+        "rate": "203389.83",
+        "amount": "203389.83"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_01",
+    "fault": "bad_checksum",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZX",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-001",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-001",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_02",
+    "fault": "line_sum_mismatch",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-002",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-002",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Item 1",
+        "qty": "1",
+        "rate": "15000.00",
+        "amount": "15000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_03",
+    "fault": "wrong_tax_split",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-003",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-003",
+    "taxable_value": "20000.00",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "3600.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_04",
+    "fault": "suspended_vendor",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Western Logistics Corp",
+    "vendor_gstin": "27XYZAB5678C1Z6",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-004",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-004",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_05",
+    "fault": "expired_invoice",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-005",
+    "invoice_date": "2026-07-17",
+    "po_number": "PO-FLT-005",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_06",
+    "fault": "future_date",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-006",
+    "invoice_date": "2026-11-19",
+    "po_number": "PO-FLT-006",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_07",
+    "fault": "duplicate_invoice",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27BCDFG1234A1Z0",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-OLD-999",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-007",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_08",
+    "fault": "over_manager_limit",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-008",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-008",
+    "taxable_value": "260000.00",
+    "cgst": "23400.00",
+    "sgst": "23400.00",
+    "igst": "0.00",
+    "total": "306800.00",
+    "line_items": [
+      {
+        "desc": "Bulk Equipment",
+        "qty": "1",
+        "rate": "260000.00",
+        "amount": "260000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_09",
+    "fault": "disallowed_rate",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-009",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-009",
+    "taxable_value": "20000.00",
+    "cgst": "1200.00",
+    "sgst": "1200.00",
+    "igst": "0.00",
+    "total": "22400.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_10",
+    "fault": "bad_checksum",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZX",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-010",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-010",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_11",
+    "fault": "line_sum_mismatch",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-011",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-011",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Item 1",
+        "qty": "1",
+        "rate": "15000.00",
+        "amount": "15000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_12",
+    "fault": "wrong_tax_split",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-012",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-012",
+    "taxable_value": "20000.00",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "3600.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_13",
+    "fault": "suspended_vendor",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Western Logistics Corp",
+    "vendor_gstin": "27XYZAB5678C1Z6",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-013",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-013",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_14",
+    "fault": "expired_invoice",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-014",
+    "invoice_date": "2026-07-17",
+    "po_number": "PO-FLT-014",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_15",
+    "fault": "future_date",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-015",
+    "invoice_date": "2026-11-19",
+    "po_number": "PO-FLT-015",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_16",
+    "fault": "duplicate_invoice",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27BCDFG1234A1Z0",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-OLD-999",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-016",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_17",
+    "fault": "over_manager_limit",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-017",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-017",
+    "taxable_value": "260000.00",
+    "cgst": "23400.00",
+    "sgst": "23400.00",
+    "igst": "0.00",
+    "total": "306800.00",
+    "line_items": [
+      {
+        "desc": "Bulk Equipment",
+        "qty": "1",
+        "rate": "260000.00",
+        "amount": "260000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_18",
+    "fault": "disallowed_rate",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-018",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-018",
+    "taxable_value": "20000.00",
+    "cgst": "1200.00",
+    "sgst": "1200.00",
+    "igst": "0.00",
+    "total": "22400.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_19",
+    "fault": "bad_checksum",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZX",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-019",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-019",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_20",
+    "fault": "line_sum_mismatch",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-020",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-020",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Item 1",
+        "qty": "1",
+        "rate": "15000.00",
+        "amount": "15000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_21",
+    "fault": "wrong_tax_split",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-021",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-021",
+    "taxable_value": "20000.00",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "3600.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_22",
+    "fault": "suspended_vendor",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Western Logistics Corp",
+    "vendor_gstin": "27XYZAB5678C1Z6",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-022",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-022",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_23",
+    "fault": "expired_invoice",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-023",
+    "invoice_date": "2026-07-17",
+    "po_number": "PO-FLT-023",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_24",
+    "fault": "future_date",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-024",
+    "invoice_date": "2026-11-19",
+    "po_number": "PO-FLT-024",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_25",
+    "fault": "duplicate_invoice",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27BCDFG1234A1Z0",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-OLD-999",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-025",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_26",
+    "fault": "over_manager_limit",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-026",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-026",
+    "taxable_value": "260000.00",
+    "cgst": "23400.00",
+    "sgst": "23400.00",
+    "igst": "0.00",
+    "total": "306800.00",
+    "line_items": [
+      {
+        "desc": "Bulk Equipment",
+        "qty": "1",
+        "rate": "260000.00",
+        "amount": "260000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_27",
+    "fault": "disallowed_rate",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-027",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-027",
+    "taxable_value": "20000.00",
+    "cgst": "1200.00",
+    "sgst": "1200.00",
+    "igst": "0.00",
+    "total": "22400.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_28",
+    "fault": "bad_checksum",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZX",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-028",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-028",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_29",
+    "fault": "line_sum_mismatch",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-029",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-029",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Item 1",
+        "qty": "1",
+        "rate": "15000.00",
+        "amount": "15000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_30",
+    "fault": "wrong_tax_split",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-030",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-030",
+    "taxable_value": "20000.00",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "3600.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_31",
+    "fault": "suspended_vendor",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Western Logistics Corp",
+    "vendor_gstin": "27XYZAB5678C1Z6",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-031",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-031",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_32",
+    "fault": "expired_invoice",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-032",
+    "invoice_date": "2026-07-17",
+    "po_number": "PO-FLT-032",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_33",
+    "fault": "future_date",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-033",
+    "invoice_date": "2026-11-19",
+    "po_number": "PO-FLT-033",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_34",
+    "fault": "duplicate_invoice",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27BCDFG1234A1Z0",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-OLD-999",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-034",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_35",
+    "fault": "over_manager_limit",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-035",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-035",
+    "taxable_value": "260000.00",
+    "cgst": "23400.00",
+    "sgst": "23400.00",
+    "igst": "0.00",
+    "total": "306800.00",
+    "line_items": [
+      {
+        "desc": "Bulk Equipment",
+        "qty": "1",
+        "rate": "260000.00",
+        "amount": "260000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_36",
+    "fault": "disallowed_rate",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-036",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-036",
+    "taxable_value": "20000.00",
+    "cgst": "1200.00",
+    "sgst": "1200.00",
+    "igst": "0.00",
+    "total": "22400.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_37",
+    "fault": "bad_checksum",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZX",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-037",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-037",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_38",
+    "fault": "line_sum_mismatch",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-038",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-038",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Item 1",
+        "qty": "1",
+        "rate": "15000.00",
+        "amount": "15000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_39",
+    "fault": "wrong_tax_split",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Apex Industrial Supplies",
+    "vendor_gstin": "27AAPFU0939F1ZV",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-039",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-039",
+    "taxable_value": "20000.00",
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "3600.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  },
+  {
+    "doc_id": "inv_faulty_40",
+    "fault": "suspended_vendor",
+    "expected_verdict": "BLOCK",
+    "vendor_name": "Western Logistics Corp",
+    "vendor_gstin": "27XYZAB5678C1Z6",
+    "buyer_name": "Meridian Traders Pvt Ltd",
+    "buyer_gstin": "27AAAPL1234F1Z8",
+    "invoice_no": "INV-FLT-040",
+    "invoice_date": "2026-11-02",
+    "po_number": "PO-FLT-040",
+    "taxable_value": "20000.00",
+    "cgst": "1800.00",
+    "sgst": "1800.00",
+    "igst": "0.00",
+    "total": "23600.00",
+    "line_items": [
+      {
+        "desc": "Base Supplies",
+        "qty": "2",
+        "rate": "10000.00",
+        "amount": "20000.00"
+      }
+    ]
+  }
+]

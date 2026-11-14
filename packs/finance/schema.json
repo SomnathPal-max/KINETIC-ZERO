@@ -1,0 +1,71 @@
+{
+  "doc_type": "invoice",
+  "fields": [
+    {
+      "name": "vendor_name",
+      "type": "string",
+      "required": true,
+      "label": "Vendor Name"
+    },
+    {
+      "name": "vendor_gstin",
+      "type": "string",
+      "required": true,
+      "label": "Vendor GSTIN"
+    },
+    {
+      "name": "buyer_gstin",
+      "type": "string",
+      "required": true,
+      "label": "Buyer GSTIN"
+    },
+    {
+      "name": "invoice_no",
+      "type": "string",
+      "required": true,
+      "label": "Invoice Number"
+    },
+    {
+      "name": "invoice_date",
+      "type": "string",
+      "required": true,
+      "label": "Invoice Date"
+    },
+    {
+      "name": "po_number",
+      "type": "string",
+      "required": true,
+      "label": "PO Number"
+    },
+    {
+      "name": "taxable_value",
+      "type": "number",
+      "required": true,
+      "label": "Taxable Value (Rs)"
+    },
+    {
+      "name": "cgst",
+      "type": "number",
+      "required": true,
+      "label": "CGST (Rs)"
+    },
+    {
+      "name": "sgst",
+      "type": "number",
+      "required": true,
+      "label": "SGST (Rs)"
+    },
+    {
+      "name": "igst",
+      "type": "number",
+      "required": true,
+      "label": "IGST (Rs)"
+    },
+    {
+      "name": "total",
+      "type": "number",
+      "required": true,
+      "label": "Total Amount (Rs)"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "run_id": "run_test_001",
+  "step_id": "s11",
+  "tier": 1,
+  "old_locator": {
+    "strategy": "id",
+    "value": "#btn_review"
+  },
+  "new_locator": {
+    "strategy": "css",
+    "value": "button.btn-preview-mutated"
+  },
+  "score_top": 0.88,
+  "score_second": 0.32,
+  "margin": 0.56,
+  "llm_calls": 0,
+  "latency_ms": 42,
+  "verified": true,
+  "human_confirmed": null,
+  "old_fp": {
+    "tag": "button",
+    "id": "btn_review",
+    "name": "review_btn",
+    "classes": ["btn", "btn-primary"],
+    "text": "Review Claim",
+    "aria_label": "Review Claim",
+    "role": "button",
+    "type": "submit",
+    "placeholder": "",
+    "label_text": "Review Claim",
+    "nearby_text": "Proceed to summary",
+    "dom_path": "html>body>main>form>div:nth-child(11)>button",
+    "bbox": [0.3, 0.82, 0.2, 0.05],
+    "form_id": "claim_form",
+    "index_in_form": 10
+  },
+  "new_fp": {
+    "tag": "button",
+    "id": "btn_x89a",
+    "name": "mutated_preview",
+    "classes": ["btn-preview-mutated"],
+    "text": "Preview Details",
+    "aria_label": "Preview Details",
+    "role": "button",
+    "type": "submit",
+    "placeholder": "",
+    "label_text": "Preview Details",
+    "nearby_text": "Proceed to summary",
+    "dom_path": "html>body>main>form>div:nth-child(11)>button.btn-preview-mutated",
+    "bbox": [0.3, 0.82, 0.2, 0.05],
+    "form_id": "claim_form",
+    "index_in_form": 10
+  }
+}

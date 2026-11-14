@@ -1,0 +1,16 @@
+{
+  "doc_id": "inv_001",
+  "decision": "APPROVE",
+  "claims": [
+    {
+      "text": "Total is within the auto-approval limit",
+      "clause_id": "VP-4.1",
+      "quoted_numbers": ["100000"]
+    },
+    {
+      "text": "Vendor GSTIN is valid format and checksum",
+      "clause_id": "VP-2.2",
+      "quoted_numbers": ["15"]
+    }
+  ]
+}
